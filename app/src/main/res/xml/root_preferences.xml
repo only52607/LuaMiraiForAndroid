@@ -1,0 +1,63 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="@string/log_header">
+        <EditTextPreference
+            app:defaultValue="200"
+            app:key="log_buffer_size"
+            app:title="@string/log_buffer_size"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="300"
+            app:key="log_limit_size"
+            app:title="@string/log_limit_size"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="50"
+            app:key="log_reduce_size"
+            app:title="@string/log_reduce_size"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/bot_header">
+        <EditTextPreference
+            app:defaultValue="60"
+            app:key="heartbeatPeriodMillis"
+            app:title="@string/heartbeatPeriodMillis"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="300"
+            app:key="statHeartbeatPeriodMillis"
+            app:title="@string/statHeartbeatPeriodMillis"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:defaultValue="STAT_HB"
+            app:entries="@array/heartbeat_strategy"
+            app:entryValues="@array/heartbeat_strategy"
+            app:key="heartbeatStrategy"
+            app:title="@string/heartbeatStrategy"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="5"
+            app:key="heartbeatTimeoutMillis"
+            app:title="@string/heartbeatTimeoutMillis"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="5"
+            app:key="firstReconnectDelayMillis"
+            app:title="@string/firstReconnectDelayMillis"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="5"
+            app:key="reconnectPeriodMillis"
+            app:title="@string/reconnectPeriodMillis"
+            app:useSimpleSummaryProvider="true" />
+        <EditTextPreference
+            app:defaultValue="2147483648"
+            app:key="reconnectionRetryTimes"
+            app:title="@string/reconnectionRetryTimes"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="autoReconnectOnForceOffline"
+            app:title="@string/autoReconnectOnForceOffline" />
+    </PreferenceCategory>
+</PreferenceScreen>

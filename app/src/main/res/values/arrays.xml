@@ -1,0 +1,8 @@
+<resources>
+    <!-- heartbeat_strategy -->
+    <string-array name="heartbeat_strategy">
+        <item>STAT_HB</item>
+        <item>REGISTER</item>
+        <item>NONE</item>
+    </string-array>
+</resources>

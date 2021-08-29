@@ -1,3 +1,114 @@
 <resources>
     <string name="app_name">LuaMirai For Android</string>
+    <string name="app_name_short">LuaMirai</string>
+    <string name="app_name_description">轻量级Bot开发框架</string>
+
+    <string name="bot_title">Bot</string>
+    <string name="bot_login">登录</string>
+    <string name="bot_logout">登出</string>
+    <string name="bot_edit">编辑</string>
+    <string name="bot_add">创建</string>
+    <string name="bot_delete">删除</string>
+    <string name="bot_re_login">重新登录</string>
+    <string name="bot_empty">还没有Bot噢，去创建一个吧~</string>
+
+    <string name="bot_create_form_id">账号</string>
+    <string name="bot_create_form_password">密码</string>
+    <string name="bot_create_form_protocol">登录协议</string>
+    <string name="bot_create_form_auto_login">自动登录</string>
+    <string name="bot_create_form_device_info">设备信息</string>
+    <string name="bot_create_form_device_info_generate">随机生成设备信息</string>
+
+    <string name="edit_bot_edit_title">编辑Bot</string>
+    <string name="edit_bot_create_title">创建Bot</string>
+
+    <string name="script_title">脚本</string>
+    <string name="script_delete">删除脚本</string>
+
+    <string name="script_add_from_file">从本地文件导入</string>
+    <string name="script_add_from_url">从URL导入</string>
+    <string name="script_add_from_store">从脚本中心导入</string>
+
+    <string name="script_label_name">名称</string>
+    <string name="script_label_version">版本</string>
+    <string name="script_label_author">作者</string>
+    <string name="script_label_description">描述</string>
+
+    <string name="script_unknown_name">未知脚本</string>
+    <string name="script_unknown_version">未知版本</string>
+    <string name="script_unknown_author">未知作者</string>
+
+    <string name="script_empty">一个脚本也没找到呢~</string>
+
+    <string name="script_import">导入</string>
+    <string name="script_importing">脚本导入中~</string>
+    <string name="script_cancel_import">取消导入</string>
+
+    <string name="script_store_title">脚本中心</string>
+
+    <string name="log_title">日志</string>
+
+    <string name="log_filter_auto_scroll">自动滚动</string>
+    <string name="log_filter_show_date">显示时间</string>
+    <string name="log_filter_show_bot_net_log">Bot网络日志</string>
+    <string name="log_filter_show_bot_message_log">Bot消息日志</string>
+    <string name="log_filter_script_output">脚本输出</string>
+    <string name="log_filter_show_identity">显示标识</string>
+
+    <string name="log_empty">日志列表空空如也~</string>
+
+    <string name="about_title">关于 LuaMirai</string>
+    <string name="about_check_update">检查更新</string>
+    <string name="about_github">Github</string>
+    <string name="about_current_version">当前版本：%1$s</string>
+    <string name="about_disclaimer">本项目仅供学习参考，禁止用于任何商业用途。\n任何单位或个人认为本项目可能涉嫌侵犯其合法权益，应该及时提出反馈，我们将会第一时间对违规内容给予删除等相关处理。</string>
+
+    <string name="extension_title">扩展支持库</string>
+
+    <string name="notification_title">LuaMirai正在后台运行</string>
+    <string name="notification_message">在线Bot数:%1$d 启用脚本数:%2$d</string>
+
+    <string name="service_channel_main_id">CHANNEL_MAIN</string>
+    <string name="service_channel_main_name">LuaMirai后台运行通知</string>
+    <string name="service_channel_main_description">LuaMirai后台运行通知</string>
+
+    <string name="drawer_description">Menu</string>
+
+    <string name="drawer_title_doc">LuaMirai开发文档</string>
+    <string name="drawer_title_script_store">脚本商店</string>
+    <string name="drawer_title_script_extend_lib">扩展支持库</string>
+    <string name="drawer_title_settings">设置</string>
+    <string name="drawer_title_about">关于</string>
+
+    <string name="empty_screen">页面还在施工中~</string>
+
+    <string name="dialog_dismiss">取消</string>
+    <string name="notification_check_confirm">去开启</string>
+    <string name="notification_check_title">请开启通知权限</string>
+    <string name="notification_check_content">开启通知权限后，LuaMirai可以长时间在后台运行而不被回收。</string>
+
+    <string name="login_solver_dialog_title_default">请完成验证</string>
+    <string name="login_solver_dialog_confirm">完成</string>
+    <string name="login_solver_dialog_dismiss">取消验证</string>
+    <string name="login_solver_dismiss_reason">用户取消了验证</string>
+
+    <string name="title_activity_settings">设置</string>
+    <!-- Preference Titles -->
+    <string name="log_header">日志</string>
+    <string name="bot_header">Bot构建</string>
+
+    <!-- Log Preferences -->
+    <string name="log_buffer_size">日志缓存加载条数</string>
+    <string name="log_limit_size">日志缓存最大条数</string>
+    <string name="log_reduce_size">日志缓存回收条数</string>
+
+    <!-- Bot Preferences -->
+    <string name="heartbeatPeriodMillis">连接心跳包周期(s)</string>
+    <string name="statHeartbeatPeriodMillis">状态心跳包周期(s)</string>
+    <string name="heartbeatStrategy">心跳策略</string>
+    <string name="heartbeatTimeoutMillis">心跳等待结果时间(s)</string>
+    <string name="firstReconnectDelayMillis">心跳失败重连等待时间(s)</string>
+    <string name="reconnectPeriodMillis">心跳失败再次等待时间(s)</string>
+    <string name="reconnectionRetryTimes">尝试重连最大次数</string>
+    <string name="autoReconnectOnForceOffline">在被挤下线时自动重连</string>
 </resources>

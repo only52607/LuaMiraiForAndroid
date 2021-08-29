@@ -1,43 +1,42 @@
 package com.ooooonly.lma
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.ooooonly.lma.ui.theme.LuaMiraiForAndroidTheme
+import com.ooooonly.lma.mirai.LoginSolverDelegate
+import com.ooooonly.lma.model.viewmodel.ViewModelContainer
+import com.ooooonly.lma.service.MainService
+import com.ooooonly.lma.ui.LuaMiraiApp
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject lateinit var viewModelContainer: ViewModelContainer
+    @Inject lateinit var loginSolverDelegate: LoginSolverDelegate
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_LuaMiraiForAndroid)
         super.onCreate(savedInstanceState)
+        Log.d("MainActivity", "Create")
         setContent {
-            LuaMiraiForAndroidTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+            LuaMiraiApp(viewModelContainer, loginSolverDelegate)
         }
     }
-}
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
+    override fun onStop() {
+        startMainService()
+        super.onStop()
+    }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    LuaMiraiForAndroidTheme {
-        Greeting("Android")
+    private fun startMainService() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            startForegroundService(Intent(this, MainService::class.java))
+        }else {
+            startService(Intent(this, MainService::class.java))
+        }
     }
 }

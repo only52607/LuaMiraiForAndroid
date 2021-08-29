@@ -1,11 +1,8 @@
 pluginManagement {
     repositories {
-        maven { url 'https://maven.aliyun.com/repository/central' }
-        maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
-        maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
+        maven { url "https://plugins.gradle.org/m2/" }
         gradlePluginPortal()
         google()
         mavenCentral()
@@ -13,19 +10,22 @@ pluginManagement {
     plugins {
         id 'com.android.application' version '7.1.0-alpha08'
         id 'com.android.library' version '7.1.0-alpha08'
-        id 'org.jetbrains.kotlin.android' version '1.5.10'
+        id 'org.jetbrains.kotlin.android' version '1.5.21'
+        id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.21'
+        id "org.jetbrains.kotlin.plugin.parcelize" version '1.5.21' apply false
+        id "com.google.devtools.ksp" version "1.5.21-1.0.0-beta07"
+        id "dagger.hilt.android.plugin" version "2.38.1"
     }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        maven { url 'https://maven.aliyun.com/repository/central' }
         maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         maven { url 'https://maven.aliyun.com/repository/google' }
-        maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
         maven { url 'https://jitpack.io' }
+        google()
+        mavenCentral()
+        mavenLocal()
     }
 }
 rootProject.name = "LuaMirai For Android"
