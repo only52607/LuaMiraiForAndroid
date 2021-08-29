@@ -11,6 +11,7 @@
 
 ## App Center
 
+https://install.appcenter.ms/users/ooooonly/apps/luamirai/distribution_groups/public
 
 # 主要功能
 
