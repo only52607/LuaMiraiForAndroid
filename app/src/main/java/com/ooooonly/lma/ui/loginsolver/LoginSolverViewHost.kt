@@ -2,9 +2,11 @@ package com.ooooonly.lma.ui.loginsolver
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.window.DialogProperties
 import com.ooooonly.lma.R
 import com.ooooonly.lma.mirai.LoginSolverDelegate
 import com.ooooonly.lma.ui.components.dialog.SimpleAlertDialog
+import kotlinx.coroutines.CompletableDeferred
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.network.CustomLoginFailedException
 import net.mamoe.mirai.utils.LoginSolver
@@ -32,11 +34,13 @@ fun LoginSolverViewHost(
         solverContinuation?.resume(result)
         showDialog = false
         currentSolverData = null
+        solverContinuation = null
     }
     fun cancelLoginSolver() {
         solverContinuation?.resumeWithException(DismissLoginException(defaultDismissReason))
         showDialog = false
         currentSolverData = null
+        solverContinuation = null
     }
     DisposableEffect(loginSolverDelegate) {
         loginSolverDelegate.setSolver(object: LoginSolver() {
@@ -67,11 +71,15 @@ fun LoginSolverViewHost(
             }
         })
         onDispose {
+            solverContinuation?.resumeWithException(DismissLoginException(defaultDismissReason))
+            solverContinuation = null
             loginSolverDelegate.clearSolver()
         }
     }
+    CompletableDeferred(0)
     if (showDialog) {
         SimpleAlertDialog (
+            properties = DialogProperties(dismissOnClickOutside = false),
             onDismiss = ::cancelLoginSolver,
             onConfirm = { finishLoginSolver(solverState.result) },
             confirmText = stringResource(R.string.login_solver_dialog_confirm),

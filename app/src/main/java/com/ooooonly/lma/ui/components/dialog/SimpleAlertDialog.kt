@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 
 @Composable
 fun SimpleAlertDialog(
@@ -17,9 +18,11 @@ fun SimpleAlertDialog(
     confirmText: String? = null,
     dismissText: String? = null,
     titleText: String? = null,
+    properties: DialogProperties = DialogProperties(),
     content: @Composable () -> Unit,
 ) {
     BaseDialog(
+        properties = properties,
         onDismissRequest = onDismiss,
         content = {
             Column(modifier = Modifier.padding(16.dp)) {
