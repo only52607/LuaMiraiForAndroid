@@ -68,7 +68,7 @@ fun OperateBotSelectionList(
         if (botPhase is BotPhase.Instantiated.Online) {
             add(logoutBotItem)
         }
-        if (botPhase is BotPhase.Instantiated.Online || botPhase is BotPhase.LoginFailed) {
+        if (botPhase is BotPhase.Instantiated.Online || botPhase is BotPhase.Instantiated.Offline || botPhase is BotPhase.LoginFailed) {
             add(reLoginBotItem)
         }
         add(removeBotItem)
