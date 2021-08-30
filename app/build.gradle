@@ -157,11 +157,14 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
 
     // mirai
-    implementation "com.github.only52607:lua-mirai:$lua_mirai_version"
+    implementation ("com.github.only52607:lua-mirai:$lua_mirai_version") {
+        exclude module: "atomicfu", group: "org.jetbrains.kotlinx"
+    }
+    // implementation ("net.mamoe:mirai-core-api:$mirai_core_version")
     implementation ("net.mamoe:mirai-core:$mirai_core_version") {
         exclude module: "atomicfu", group: "org.jetbrains.kotlinx"
     }
-    implementation "org.jetbrains.kotlinx:atomicfu-jvm:0.15.1"
+    implementation "org.jetbrains.kotlinx:atomicfu-jvm:0.16.1"
 
     implementation 'com.github.javiersantos:AppUpdater:2.7'
 
