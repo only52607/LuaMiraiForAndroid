@@ -32,6 +32,7 @@ fun SolverDataRender(
     Box(
         modifier = Modifier.padding(5.dp)
     ) {
+        val copySuccessText = stringResource(R.string.copy_to_clip_board_success)
         when (solverData) {
             is LoginSolverData.PicCaptcha -> {
                 Column {
@@ -53,7 +54,7 @@ fun SolverDataRender(
             is LoginSolverData.UnsafeDeviceLoginVerify -> {
                 Box(modifier = Modifier.ripperClickable {
                     clipboardManager.setText(AnnotatedString(text = solverData.url))
-                    Toast.makeText(context, stringResource(R.string.copy_to_clip_board_success), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, copySuccessText, Toast.LENGTH_SHORT).show()
                 }) {
                     Text("${stringResource(R.string.login_solver_device_title)}：${solverData.url}")
                 }
