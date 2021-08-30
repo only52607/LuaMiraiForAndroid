@@ -93,7 +93,9 @@ class MiraiViewModel @Inject constructor(
             try {
                 botInstance.login()
             } catch (e: LoginFailedException) {
+                val botLogger = botInstance.configuration.botLoggerSupplier(botInstance)
                 botState.phase = BotPhase.LoginFailed(e)
+                botLogger.error(e.message, e)
             }
         }
     }
