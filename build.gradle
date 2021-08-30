@@ -7,7 +7,7 @@ task clean(type: Delete) {
 buildscript {
     ext {
         mirai_core_version = "2.7.0"
-        lua_mirai_version = "2.3.1"
+        lua_mirai_version = "2.3.4"
         kotlin_version = '1.5.21'
         kotlin_reflect_version = '1.5.21'
         compose_version = '1.0.1'
