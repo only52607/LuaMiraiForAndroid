@@ -13,10 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import com.ooooonly.lma.utils.ripperClickable
 import net.mamoe.mirai.Bot
+import com.ooooonly.lma.R
 
 @Composable
 fun SolverDataRender(
@@ -51,9 +53,9 @@ fun SolverDataRender(
             is LoginSolverData.UnsafeDeviceLoginVerify -> {
                 Box(modifier = Modifier.ripperClickable {
                     clipboardManager.setText(AnnotatedString(text = solverData.url))
-                    Toast.makeText(context, "已复制到剪贴板", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, stringResource(R.string.copy_to_clip_board_success), Toast.LENGTH_SHORT).show()
                 }) {
-                    Text("设备锁验证(点击链接复制到手Q完成验证)：${solverData.url}")
+                    Text("${stringResource(R.string.login_solver_device_title)}：${solverData.url}")
                 }
             }
         }

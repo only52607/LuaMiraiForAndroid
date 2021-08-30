@@ -91,6 +91,9 @@
     <string name="login_solver_dialog_confirm">完成</string>
     <string name="login_solver_dialog_dismiss">取消验证</string>
     <string name="login_solver_dismiss_reason">用户取消了验证</string>
+    <string name="login_solver_device_title">设备锁验证(点击链接复制到手Q完成验证)</string>
+
+    <string name="copy_to_clip_board_success">已复制到剪贴板</string>
 
     <string name="title_activity_settings">设置</string>
     <!-- Preference Titles -->
