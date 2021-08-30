@@ -43,8 +43,8 @@ class BotConstructorImpl @Inject constructor(
                     else -> BotConfiguration.HeartbeatStrategy.STAT_HB
                 }
                 heartbeatTimeoutMillis = sharedPreferences.getLongSafe("heartbeatTimeoutMillis", 5) * 1000
-                firstReconnectDelayMillis = sharedPreferences.getLongSafe("firstReconnectDelayMillis", 5) * 1000
-                reconnectPeriodMillis = sharedPreferences.getLongSafe("reconnectPeriodMillis", 5) * 1000
+                // firstReconnectDelayMillis = sharedPreferences.getLongSafe("firstReconnectDelayMillis", 5) * 1000
+                // reconnectPeriodMillis = sharedPreferences.getLongSafe("reconnectPeriodMillis", 5) * 1000
                 reconnectionRetryTimes = sharedPreferences.getIntSafe("reconnectionRetryTimes", Int.MAX_VALUE)
                 autoReconnectOnForceOffline = sharedPreferences.getBooleanSafe("autoReconnectOnForceOffline", false)
             })
