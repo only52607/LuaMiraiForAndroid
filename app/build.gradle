@@ -165,7 +165,10 @@ dependencies {
         exclude module: "atomicfu", group: "org.jetbrains.kotlinx"
     }
     implementation "org.jetbrains.kotlinx:atomicfu-jvm:0.16.1"
-
+    implementation "net.mamoe:mirai-console:$mirai_core_version"
+    
+    // utils
+    implementation 'com.ooooonly:giteeman:0.1.1'
     implementation 'com.github.javiersantos:AppUpdater:2.7'
 
     //app center
