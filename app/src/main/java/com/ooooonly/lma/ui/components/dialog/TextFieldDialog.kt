@@ -20,7 +20,9 @@ fun TextFieldDialog(
     confirmText: String = "保存",
     dismissText: String = "取消",
     titleText: String = "",
-    additionalContent: @Composable () -> Unit = {}
+    additionalContent: @Composable () -> Unit = {},
+    showTextField: Boolean = true,
+    textFieldMaxLine: Int = 1
 ) {
     BaseDialog(
         onDismissRequest = onDismiss,
@@ -32,11 +34,14 @@ fun TextFieldDialog(
                     fontWeight = FontWeight.Bold
                 )
                 additionalContent()
-                TextField(
-                    value = content,
-                    onValueChange = onContentChange,
-                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent)
-                )
+                if (showTextField) {
+                    TextField(
+                        maxLines = textFieldMaxLine,
+                        value = content,
+                        onValueChange = onContentChange,
+                        colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent)
+                    )
+                }
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     horizontalArrangement = Arrangement.End,

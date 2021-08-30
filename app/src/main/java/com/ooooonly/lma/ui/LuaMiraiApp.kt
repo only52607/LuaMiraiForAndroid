@@ -27,7 +27,7 @@ import com.ooooonly.lma.R
 import com.ooooonly.lma.mirai.LoginSolverDelegate
 import com.ooooonly.lma.model.viewmodel.ViewModelContainer
 import com.ooooonly.lma.ui.drawer.AppDrawer
-import com.ooooonly.lma.ui.loginsolver.LoginSolverDialogHost
+import com.ooooonly.lma.ui.loginsolver.LoginSolverViewHost
 import com.ooooonly.lma.ui.navigation.LuaMiraiBottomNavigationBar
 import com.ooooonly.lma.ui.navigation.LuaMiraiNavGraph
 import com.ooooonly.lma.ui.navigation.Screen
@@ -82,7 +82,7 @@ fun LuaMiraiApp(
                     )
                 }
             }
-            LoginSolverDialogHost(loginSolverDelegate)
+            LoginSolverViewHost(loginSolverDelegate)
             NotificationPermissionCheckDialogHost()
         }
     }

@@ -1,21 +1,11 @@
 package com.ooooonly.lma.ui.loginsolver
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Update
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.ooooonly.lma.R
 import com.ooooonly.lma.mirai.LoginSolverDelegate
-import com.ooooonly.lma.ui.components.dialog.TextFieldDialog
+import com.ooooonly.lma.ui.components.dialog.SimpleAlertDialog
 import net.mamoe.mirai.Bot
-import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.network.CustomLoginFailedException
 import net.mamoe.mirai.utils.LoginSolver
 import kotlin.coroutines.Continuation
@@ -24,7 +14,7 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 @Composable
-fun LoginSolverDialogHost(
+fun LoginSolverViewHost(
     loginSolverDelegate: LoginSolverDelegate
 ) {
     var showDialog by remember {
@@ -33,18 +23,28 @@ fun LoginSolverDialogHost(
     var solverContinuation:Continuation<String?>? by remember {
         mutableStateOf(null)
     }
-    var solverResult by remember {
-        mutableStateOf("")
-    }
-    var currentSolverType:LoginSolverType? by remember {
+    var currentSolverData:LoginSolverData? by remember {
         mutableStateOf(null)
     }
+    val solverState = rememberSolverState()
     val defaultDismissReason = stringResource(R.string.login_solver_dismiss_reason)
+    fun finishLoginSolver(result: String) {
+        solverContinuation?.resume(result)
+        showDialog = false
+        currentSolverData = null
+    }
+    fun cancelLoginSolver() {
+        solverContinuation?.resumeWithException(DismissLoginException(defaultDismissReason))
+        showDialog = false
+        currentSolverData = null
+    }
     DisposableEffect(loginSolverDelegate) {
         loginSolverDelegate.setSolver(object: LoginSolver() {
+            override val isSliderCaptchaSupported: Boolean = true
+
             override suspend fun onSolvePicCaptcha(bot: Bot, data: ByteArray): String? {
                 return suspendCoroutine {
-                    currentSolverType = LoginSolverType.PicCaptcha(bot, data)
+                    currentSolverData = LoginSolverData.PicCaptcha(bot, data)
                     solverContinuation = it
                     showDialog = true
                 }
@@ -52,7 +52,7 @@ fun LoginSolverDialogHost(
 
             override suspend fun onSolveSliderCaptcha(bot: Bot, url: String): String? {
                 return suspendCoroutine {
-                    currentSolverType = LoginSolverType.SliderCaptcha(bot, url)
+                    currentSolverData = LoginSolverData.SliderCaptcha(bot, url)
                     solverContinuation = it
                     showDialog = true
                 }
@@ -60,7 +60,7 @@ fun LoginSolverDialogHost(
 
             override suspend fun onSolveUnsafeDeviceLoginVerify(bot: Bot, url: String): String? {
                 return suspendCoroutine {
-                    currentSolverType = LoginSolverType.UnsafeDeviceLoginVerify(bot, url)
+                    currentSolverData = LoginSolverData.UnsafeDeviceLoginVerify(bot, url)
                     solverContinuation = it
                     showDialog = true
                 }
@@ -71,31 +71,22 @@ fun LoginSolverDialogHost(
         }
     }
     if (showDialog) {
-        TextFieldDialog(
-            onDismiss = {
-                solverContinuation?.resumeWithException(DismissLoginException(defaultDismissReason))
-                showDialog = false
-                currentSolverType = null
-            },
-            onConfirm = {
-                solverContinuation?.resume(solverResult)
-                showDialog = false
-                currentSolverType = null
-            },
-            content = solverResult,
-            onContentChange = { solverResult = it },
+        SimpleAlertDialog (
+            onDismiss = ::cancelLoginSolver,
+            onConfirm = { finishLoginSolver(solverState.result) },
             confirmText = stringResource(R.string.login_solver_dialog_confirm),
             dismissText = stringResource(R.string.login_solver_dialog_dismiss),
             titleText = stringResource(R.string.login_solver_dialog_title_default),
-            additionalContent = {
-                val solverType = currentSolverType
-                if (solverType != null) {
-                    SolverTypeRender(
-                        solverType = solverType,
-                        onClick = { solverContinuation?.resume(null) }
+            content = {
+                currentSolverData?.let {
+                    SolverDataRender(
+                        solverState = solverState,
+                        solverData = it,
+                        onUpdate = { solverContinuation?.resume(null) },
+                        onSolved = ::finishLoginSolver
                     )
                 }
-            }
+            },
         )
     }
 }
