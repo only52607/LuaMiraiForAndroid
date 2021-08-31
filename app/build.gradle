@@ -22,8 +22,8 @@ android {
         applicationId "com.ooooonly.lma"
         minSdk 21
         targetSdk 30
-        versionCode 3
-        versionName "1.0-alpha.3"
+        versionCode 11
+        versionName "1.0-alpha.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -60,6 +60,12 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+}
+
+kotlin.sourceSets.all {
+    languageSettings.useExperimentalAnnotation("kotlin.RequiresOptIn")
+    languageSettings.useExperimentalAnnotation("kotlin.ExperimentalUnsignedTypes")
+    languageSettings.useExperimentalAnnotation("net.mamoe.mirai.console.ConsoleFrontEndImplementation")
 }
 
 allprojects {
@@ -166,7 +172,7 @@ dependencies {
     }
     implementation "org.jetbrains.kotlinx:atomicfu-jvm:0.16.1"
     implementation "net.mamoe:mirai-console:$mirai_core_version"
-    
+
     // utils
     implementation 'com.ooooonly:giteeman:0.1.1'
     implementation 'com.github.javiersantos:AppUpdater:2.7'
