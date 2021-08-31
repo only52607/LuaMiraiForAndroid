@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.ooooonly.lma.mcl.MclService
 import com.ooooonly.lma.mirai.LoginSolverDelegate
 import com.ooooonly.lma.model.viewmodel.ViewModelContainer
 import com.ooooonly.lma.service.MainService
@@ -25,6 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             LuaMiraiApp(viewModelContainer, loginSolverDelegate)
         }
+        // startMclService()
     }
 
     override fun onStop() {
@@ -38,5 +40,9 @@ class MainActivity : ComponentActivity() {
         }else {
             startService(Intent(this, MainService::class.java))
         }
+    }
+
+    private fun startMclService() {
+        startService(Intent(this, MclService::class.java))
     }
 }

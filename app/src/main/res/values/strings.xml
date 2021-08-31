@@ -54,6 +54,7 @@
     <string name="log_filter_show_bot_message_log">Bot消息日志</string>
     <string name="log_filter_script_output">脚本输出</string>
     <string name="log_filter_show_identity">显示标识</string>
+    <string name="log_filter_show_mirai_console">显示MiraiConsole输出</string>
 
     <string name="log_empty">日志列表空空如也~</string>
 

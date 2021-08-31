@@ -20,5 +20,6 @@ data class LogEntity(
         const val FROM_BOT_PRIMARY = 0
         const val FROM_BOT_NETWORK = 1
         const val FROM_SCRIPT = 2
+        const val FROM_MCL = 3
     }
 }

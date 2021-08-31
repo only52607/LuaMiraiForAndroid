@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ooooonly.lma">
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".LuaMiraiApplication"
         android:allowBackup="true"
@@ -15,8 +14,8 @@
             android:name=".ui.setting.SettingsActivity"
             android:exported="true"
             android:label="@string/title_activity_settings"
-            android:theme="@style/Theme.LuaMiraiForAndroid.Settings"
-            />
+            android:theme="@style/Theme.LuaMiraiForAndroid.Settings" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -30,8 +29,17 @@
             </intent-filter>
         </activity>
         <service
+            android:name=".mcl.MclService"
+            android:enabled="true"
+            android:exported="false"></service>
+
+        <service
             android:name=".service.MainService"
             android:enabled="true"
             android:exported="false" />
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
 </manifest>

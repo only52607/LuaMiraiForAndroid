@@ -31,6 +31,8 @@ class AppModule {
         return AppFiles(
             scriptDirectory = File(appContext.filesDir, "scripts").also { if(!it.exists()) it.mkdir() },
             botWorkingDirBase = File(appContext.filesDir, "bots").also { if(!it.exists()) it.mkdir() },
+            mclWorkingDirBase = File(appContext.filesDir, "mcl").also { if(!it.exists()) it.mkdir() },
+            odexDirectory = File(appContext.filesDir, "odex").also { if(!it.exists()) it.mkdir() },
         )
     }
 

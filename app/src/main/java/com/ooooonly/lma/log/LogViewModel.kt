@@ -8,7 +8,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.ooooonly.lma.data.dao.LogDao
 import com.ooooonly.lma.model.entity.LogEntity
-import com.ooooonly.lma.ui.log.LogState
 import com.ooooonly.lma.utils.getIntSafe
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -51,6 +50,7 @@ class LogViewModel @Inject constructor(
             val showBotMessageLog = logState.filterState.showBotMessageLog
             val showBotNetLog = logState.filterState.showBotNetLog
             val showScriptOutput = logState.filterState.showScriptOutput
+            val showMclLog = logState.filterState.showMclLog
             val conditions = mutableListOf<String>()
             if (showBotMessageLog) {
                 conditions.add("`from`=${LogEntity.FROM_BOT_PRIMARY}")
@@ -60,6 +60,9 @@ class LogViewModel @Inject constructor(
             }
             if (showScriptOutput) {
                 conditions.add("`from`=${LogEntity.FROM_SCRIPT}")
+            }
+            if (showMclLog) {
+                conditions.add("`from`=${LogEntity.FROM_MCL}")
             }
             if (conditions.isEmpty()) {
                 return@snapshotFlow null
@@ -88,6 +91,8 @@ class LogViewModel @Inject constructor(
         if (logState.filterState.showBotNetLog && logEntity.from == LogEntity.FROM_BOT_NETWORK)
             return true
         if (logState.filterState.showScriptOutput && logEntity.from == LogEntity.FROM_SCRIPT)
+            return true
+        if (logState.filterState.showMclLog && logEntity.from == LogEntity.FROM_MCL)
             return true
         return false
     }
