@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.ooooonly.lma.BuildConfig
 import com.ooooonly.lma.mcl.MclLoggerProvider
-import com.ooooonly.lma.mcl.PluginLoaderProvider
 import com.ooooonly.lma.mirai.LoginSolverDelegate
 import com.ooooonly.lma.model.AppFiles
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -24,6 +23,7 @@ import net.mamoe.mirai.utils.LoginSolver
 import net.mamoe.mirai.utils.MiraiLogger
 import java.nio.file.Path
 import javax.inject.Inject
+import javax.inject.Provider
 import kotlin.coroutines.CoroutineContext
 
 @OptIn(ConsoleFrontEndImplementation::class, ConsoleExperimentalApi::class)
@@ -34,13 +34,13 @@ class MiraiConsoleImplementationForAndroid @Inject constructor(
     private val mclLoggerProvider: MclLoggerProvider,
     override val consoleInput: ConsoleInput,
     override val consoleCommandSender: MiraiConsoleImplementation.ConsoleCommandSenderImpl,
-    private val pluginLoaderProvider: PluginLoaderProvider
+    private val pluginLoaderProvider: Provider<PluginLoader<*,*>>
 ) : MiraiConsoleImplementation {
 
     private val errorLogger = mclLoggerProvider.provideMclLogger("Error")
 
     override val builtInPluginLoaders: List<Lazy<PluginLoader<*, *>>>
-        get() = listOf(lazy { pluginLoaderProvider.providePluginLoader() })
+        get() = listOf(lazy { pluginLoaderProvider.get() })
 
     override val configStorageForBuiltIns: PluginDataStorage =
         MultiFilePluginDataStorage(rootPath.resolve("config"))
