@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ooooonly.lma">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".LuaMiraiApplication"
@@ -9,7 +13,9 @@
         android:label="@string/app_name_short"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.LuaMiraiForAndroid">
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.LuaMiraiForAndroid"
+        tools:targetApi="m">
         <activity
             android:name=".ui.setting.SettingsActivity"
             android:exported="true"
@@ -28,18 +34,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".mcl.MclService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <service
             android:name=".service.MainService"
             android:enabled="true"
             android:exported="false" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
 </manifest>
