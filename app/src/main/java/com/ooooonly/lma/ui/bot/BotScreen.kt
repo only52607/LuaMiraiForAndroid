@@ -14,6 +14,7 @@ import com.ooooonly.lma.mirai.BotState
 import com.ooooonly.lma.mirai.MiraiViewModel
 import net.mamoe.mirai.Bot
 import com.ooooonly.lma.R
+import com.ooooonly.lma.ui.components.drawer.BottomDrawerFix
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
@@ -132,7 +133,7 @@ fun BotScreen(
         }
     }
 
-    BottomDrawer(
+    BottomDrawerFix(
         drawerState = drawerState,
         gesturesEnabled = true,
         drawerContent = drawerContent,

@@ -18,6 +18,7 @@ import com.ooooonly.lma.script.ScriptViewModel
 import com.ooooonly.lma.ui.components.dialog.ProgressDialogHost
 import com.ooooonly.lma.ui.components.dialog.TextFieldDialog
 import com.ooooonly.lma.ui.components.dialog.rememberProgressDialogState
+import com.ooooonly.lma.ui.components.drawer.BottomDrawerFix
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -91,7 +92,7 @@ fun ScriptScreen(
         snapshotFlow { drawerState.isClosed }.filter { it }.collect { currentScript = null }
     }
 
-    BottomDrawer(
+    BottomDrawerFix(
         drawerState = drawerState,
         gesturesEnabled = true,
         drawerContent = {
