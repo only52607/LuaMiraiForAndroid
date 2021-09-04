@@ -36,6 +36,7 @@ fun SimpleAlertDialog(
                 content()
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
