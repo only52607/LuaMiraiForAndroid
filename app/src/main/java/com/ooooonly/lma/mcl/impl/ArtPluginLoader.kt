@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
-class ArtPluginLoader: JvmPluginLoader by JvmPluginLoader {
+class ArtPluginLoader @Inject constructor(): JvmPluginLoader by JvmPluginLoader {
 
     private val classLoaders: MutableList<ArtPluginClassLoader> = mutableListOf()
 
