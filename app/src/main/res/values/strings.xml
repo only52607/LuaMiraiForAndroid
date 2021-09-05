@@ -47,6 +47,7 @@
     <string name="script_empty">一个脚本也没找到呢~</string>
 
     <string name="script_import">导入</string>
+    <string name="script_import_successful">导入脚本成功</string>
     <string name="script_importing">脚本导入中~</string>
     <string name="script_cancel_import">取消导入</string>
 
