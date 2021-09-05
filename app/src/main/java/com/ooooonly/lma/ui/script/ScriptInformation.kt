@@ -11,6 +11,10 @@ import com.ooooonly.lma.script.BotScriptInstanceOwner
 import com.ooooonly.lma.script.ScriptPhase
 import com.ooooonly.lma.script.ScriptState
 import com.ooooonly.lma.ui.components.text.Subtitle2
+import com.ooooonly.lma.utils.readableFileSize
+import com.ooooonly.luaMirai.base.BotScriptFileSource
+import com.ooooonly.luaMirai.base.BotScriptSource
+import com.ooooonly.luaMirai.base.BotScriptURLSource
 import net.mamoe.mirai.utils.MiraiInternalApi
 
 @OptIn(MiraiInternalApi::class)
@@ -39,8 +43,25 @@ fun ScriptInformation(
         }
         Spacer(Modifier.height(16.dp))
         Row(Modifier.fillMaxWidth()) {
+            Subtitle2("${stringResource(R.string.script_label_size)}:")
+            Text(instance.source?.size?.readableFileSize ?: "")
+        }
+        Spacer(Modifier.height(16.dp))
+        Row(Modifier.fillMaxWidth()) {
+            Subtitle2("${stringResource(R.string.script_label_source)}:")
+            Text(instance.source?.brief ?: "")
+        }
+        Spacer(Modifier.height(16.dp))
+        Row(Modifier.fillMaxWidth()) {
             Subtitle2("${stringResource(R.string.script_label_description)}:")
             Text(instance.header.getOrDefault("description", ""))
         }
     }
 }
+
+val BotScriptSource.brief: String
+    get() = when(this) {
+            is BotScriptURLSource -> this.url.toString()
+            is BotScriptFileSource -> this.file.path
+            else -> "Unknown"
+        }
