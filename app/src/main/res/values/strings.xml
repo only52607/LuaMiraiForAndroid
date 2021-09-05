@@ -23,6 +23,7 @@
     <string name="edit_bot_create_title">创建Bot</string>
 
     <string name="script_title">脚本</string>
+    <string name="script_update">更新脚本</string>
     <string name="script_delete">删除脚本</string>
 
     <string name="script_add_from_file">从本地文件导入</string>
@@ -34,6 +35,11 @@
     <string name="script_label_author">作者</string>
     <string name="script_label_description">描述</string>
 
+    <string name="script_unsupported_uri">暂不支持该格式</string>
+    <string name="script_creating">创建中</string>
+    <string name="script_updating">更新中</string>
+    <string name="script_failed_on_creating">创建中</string>
+    <string name="script_failed_on_updating">更新失败</string>
     <string name="script_unknown_name">未知脚本</string>
     <string name="script_unknown_version">未知版本</string>
     <string name="script_unknown_author">未知作者</string>
