@@ -34,6 +34,8 @@
     <string name="script_label_version">版本</string>
     <string name="script_label_author">作者</string>
     <string name="script_label_description">描述</string>
+    <string name="script_label_size">大小</string>
+    <string name="script_label_source">来源</string>
 
     <string name="script_unsupported_uri">暂不支持该格式</string>
     <string name="script_creating">创建中</string>
