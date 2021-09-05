@@ -13,7 +13,9 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.PrintStream
+import java.lang.RuntimeException
 import java.net.URL
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -67,22 +69,18 @@ class ScriptBuilderImpl @Inject constructor(
         }
     }
 
-    override suspend fun buildBotScript(entity: ScriptEntity): BotScript? = try {
+    override suspend fun buildBotScript(entity: ScriptEntity): BotScript =
         when (entity.type) {
             ScriptEntity.TYPE_FILE -> {
                 val file = File(entity.source)
-                if (!file.exists()) {
-                    scriptDao.deleteScript(entity)
-                    null
-                } else {
-                    BotScriptFactory.buildBotScript(
-                        entity.lang,
-                        file,
-                        stdout = ::scriptStdPrintStreamBuilder,
-                        stderr = ::scriptErrPrintStreamBuilder,
-                        extraCoroutineContext = ::scriptCoroutineContext
-                    )
-                }
+                if (!file.exists()) throw FileNotFoundException("找不到文件")
+                BotScriptFactory.buildBotScript(
+                    entity.lang,
+                    file,
+                    stdout = ::scriptStdPrintStreamBuilder,
+                    stderr = ::scriptErrPrintStreamBuilder,
+                    extraCoroutineContext = ::scriptCoroutineContext
+                )
             }
             ScriptEntity.TYPE_URL -> BotScriptFactory.buildBotScript(
                 entity.lang,
@@ -98,10 +96,8 @@ class ScriptBuilderImpl @Inject constructor(
                 stderr = ::scriptErrPrintStreamBuilder,
                 extraCoroutineContext = ::scriptCoroutineContext
             )
-            else -> null
+            else -> throw UnknownScriptTypeException("未知的脚本类型")
         }
-    } catch (e: Exception) {
-        Log.e("script", "load script failed.", e)
-        null
-    }
 }
+
+class UnknownScriptTypeException(message: String) : RuntimeException(message)

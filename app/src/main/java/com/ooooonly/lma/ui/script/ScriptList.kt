@@ -20,7 +20,7 @@ fun ScriptList(
     if(scripts.isEmpty()) {
         EmptyView(pictureResId = R.drawable.bg_blank_3, messageResId = R.string.script_empty)
     } else {
-        LazyColumn {
+        LazyColumn(modifier = modifier) {
             items(scripts) { script ->
                 ScriptItem(scriptState = script, onClick = { onClickScript(script) }, onEnableChanged = { onScriptEnableChanged(script, it) })
             }

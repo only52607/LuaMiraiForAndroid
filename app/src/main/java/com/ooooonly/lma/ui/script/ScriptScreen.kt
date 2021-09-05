@@ -1,7 +1,10 @@
 package com.ooooonly.lma.ui.script
 
+import android.content.ContentResolver.SCHEME_FILE
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -26,6 +29,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.mamoe.mirai.utils.MiraiInternalApi
+import java.io.File
 import java.net.URL
 
 @OptIn(MiraiInternalApi::class, ExperimentalMaterialApi::class)
@@ -41,52 +45,10 @@ fun ScriptScreen(
     val startActivityAtomic = remember { atomic(0) }
     var showURLImportDialog by remember { mutableStateOf(false) }
     val progressDialogState = rememberProgressDialogState()
-
-    val importMessage = stringResource(R.string.script_importing)
-    val importCancelText = stringResource(R.string.script_cancel_import)
-    val importScriptFromURL: (String) -> Unit = remember {
-        { url ->
-            progressDialogState.postProgress(
-                message = importMessage,
-                cancelText = importCancelText,
-                cancellable = true
-            ) {
-                withContext(Dispatchers.IO) {
-                    scriptViewModel.addScript(URL(url).openStream())
-                }
-            }
-        }
-    }
-
     val contentResolver = LocalContext.current.contentResolver
-    val importScriptFromURI: (Uri) -> Unit = remember {
-        { uri ->
-            progressDialogState.postProgress(
-                message = importMessage,
-                cancelText = importCancelText,
-                cancellable = true
-            ) {
-                contentResolver.openInputStream(uri)?.let { scriptViewModel.addScript(it) }
-            }
-        }
-    }
-
+    val context = LocalContext.current
     val activityResultRegistry = LocalActivityResultRegistryOwner.current?.activityResultRegistry
-    val addScriptFromFile: () -> Unit = remember {
-        {
-            activityResultRegistry?.register(
-                "ADD_SCRIPT_${startActivityAtomic.getAndIncrement()}",
-                ActivityResultContracts.OpenDocument()
-            ) { uri ->
-                if (uri == null) return@register
-                contentResolver.takePersistableUriPermission(
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-                importScriptFromURI(uri)
-            }?.launch(arrayOf("*/*"))
-        }
-    }
+    val unsupportedUriText = stringResource(R.string.script_unsupported_uri)
 
     LaunchedEffect(Unit) {
         snapshotFlow { drawerState.isClosed }.filter { it }.collect { currentScript = null }
@@ -104,6 +66,10 @@ fun ScriptScreen(
                         onDeleteScriptSelected = {
                             coroutineScope.launch { drawerState.close() }
                             currentScript?.let(scriptViewModel::deleteScript)
+                        },
+                        onUpdateScriptSelected = {
+                            coroutineScope.launch { drawerState.close() }
+                            currentScript?.let(scriptViewModel::updateScript)
                         }
                     )
                 }
@@ -111,7 +77,21 @@ fun ScriptScreen(
                 AddScriptSelectionList(
                     onAddScriptFromFileSelected = {
                         coroutineScope.launch { drawerState.close() }
-                        addScriptFromFile()
+                        activityResultRegistry?.register(
+                            "ADD_SCRIPT_${startActivityAtomic.getAndIncrement()}",
+                            ActivityResultContracts.OpenDocument()
+                        ) { uri ->
+                            if (uri == null) return@register
+                            contentResolver.takePersistableUriPermission(
+                                uri,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            )
+                            Log.d("script", uri.toString())
+                            when(uri.scheme) {
+                                SCHEME_FILE -> scriptViewModel.addScript(File(uri.path!!))
+                                else -> Toast.makeText(context, unsupportedUriText, Toast.LENGTH_SHORT).show()
+                            }
+                        }?.launch(arrayOf("*/*"))
                     },
                     onAddScriptFromURLSelected = {
                         coroutineScope.launch { drawerState.close() }
@@ -155,7 +135,7 @@ fun ScriptScreen(
             confirmText = stringResource(R.string.script_import),
             onConfirm = {
                 showURLImportDialog = false
-                importScriptFromURL(content)
+                scriptViewModel.addScript(URL(content))
             }
         )
     }
