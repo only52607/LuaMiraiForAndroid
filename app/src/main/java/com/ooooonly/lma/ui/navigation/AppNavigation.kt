@@ -27,6 +27,7 @@ import com.ooooonly.lma.ui.extension.ExtensionScreen
 import com.ooooonly.lma.ui.log.LogScreen
 import com.ooooonly.lma.ui.script.ScriptScreen
 import com.ooooonly.lma.ui.script.store.ScriptStoreScreen
+import com.ooooonly.lma.utils.GiteeFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -35,6 +36,7 @@ fun LuaMiraiNavGraph(
     navController: NavHostController,
     scaffoldState: ScaffoldState,
     startDestination: String = Screen.Bot.route,
+    scriptCenterRoot: GiteeFile,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     viewModelContainer: ViewModelContainer,
 ) {
@@ -59,7 +61,8 @@ fun LuaMiraiNavGraph(
         addScriptTopLevel(
             navController = navController,
             scriptViewModel = viewModelContainer.scriptViewModel,
-            navigationIcon = navigationIcon
+            navigationIcon = navigationIcon,
+            scriptCenterRoot = scriptCenterRoot,
         )
         addLogTopLevel(
             navController = navController,
@@ -111,6 +114,7 @@ private fun NavGraphBuilder.addBotTopLevel(
 private fun NavGraphBuilder.addScriptTopLevel(
     navController: NavController,
     scriptViewModel: ScriptViewModel,
+    scriptCenterRoot: GiteeFile,
     navigationIcon: @Composable () -> Unit
 ) {
     navigation(
@@ -128,6 +132,7 @@ private fun NavGraphBuilder.addScriptTopLevel(
         }
         composable(LeafScreen.ScriptStore.createRoute(Screen.Script)) {
             ScriptStoreScreen(
+                scriptCenterRoot = scriptCenterRoot,
                 scriptViewModel = scriptViewModel,
                 onBack = { navController.popBackStack() },
             )

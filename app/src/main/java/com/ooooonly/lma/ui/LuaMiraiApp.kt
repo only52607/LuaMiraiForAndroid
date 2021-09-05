@@ -32,6 +32,7 @@ import com.ooooonly.lma.ui.navigation.LuaMiraiBottomNavigationBar
 import com.ooooonly.lma.ui.navigation.LuaMiraiNavGraph
 import com.ooooonly.lma.ui.navigation.Screen
 import com.ooooonly.lma.ui.theme.LuaMiraiForAndroidTheme
+import com.ooooonly.lma.utils.GiteeFile
 import kotlinx.coroutines.launch
 
 
@@ -39,7 +40,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun LuaMiraiApp(
     viewModelContainer: ViewModelContainer,
-    loginSolverDelegate: LoginSolverDelegate
+    loginSolverDelegate: LoginSolverDelegate,
+    scriptCenterRoot: GiteeFile
 ) {
     LuaMiraiForAndroidTheme {
         ProvideWindowInsets {
@@ -78,7 +80,8 @@ fun LuaMiraiApp(
                     LuaMiraiNavGraph(
                         navController = navController,
                         scaffoldState = scaffoldState,
-                        viewModelContainer = viewModelContainer
+                        viewModelContainer = viewModelContainer,
+                        scriptCenterRoot = scriptCenterRoot
                     )
                 }
             }

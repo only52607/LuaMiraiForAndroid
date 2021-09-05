@@ -4,18 +4,26 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.ooooonly.lma.R
 import com.ooooonly.lma.script.ScriptViewModel
-import com.ooooonly.lma.ui.components.EmptyView
+import com.ooooonly.lma.utils.GiteeFile
 import net.mamoe.mirai.utils.MiraiInternalApi
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 @OptIn(MiraiInternalApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun ScriptStoreScreen(
+    scriptCenterRoot: GiteeFile,
     scriptViewModel: ScriptViewModel,
     onBack: () -> Unit
 ) {
+    var currentGiteeScriptFile by remember {
+        mutableStateOf(scriptCenterRoot)
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -29,6 +37,13 @@ fun ScriptStoreScreen(
             )
         },
     ) {
-        EmptyView(pictureResId = R.drawable.bg_blank_5, messageResId = R.string.empty_screen)
+        GiteeScriptList (
+            file = currentGiteeScriptFile,
+            onFileClick = {
+                if (it.isDirectory) {
+                    currentGiteeScriptFile = it
+                }
+            }
+        )
     }
 }
