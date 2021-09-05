@@ -61,6 +61,7 @@ fun LuaMiraiNavGraph(
             navController = navController,
             scriptViewModel = appContainer.scriptViewModel,
             navigationIcon = navigationIcon,
+            scaffoldState = scaffoldState,
             scriptCenterRoot = appContainer.scriptCenterRoot,
         )
         addLogTopLevel(
@@ -114,6 +115,7 @@ private fun NavGraphBuilder.addScriptTopLevel(
     navController: NavController,
     scriptViewModel: ScriptViewModel,
     scriptCenterRoot: GiteeFile,
+    scaffoldState: ScaffoldState,
     navigationIcon: @Composable () -> Unit
 ) {
     navigation(
@@ -133,6 +135,7 @@ private fun NavGraphBuilder.addScriptTopLevel(
             ScriptStoreScreen(
                 scriptCenterRoot = scriptCenterRoot,
                 scriptViewModel = scriptViewModel,
+                scaffoldState = scaffoldState,
                 onBack = { navController.popBackStack() },
             )
         }

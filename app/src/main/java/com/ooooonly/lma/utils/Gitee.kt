@@ -1,16 +1,11 @@
 package com.ooooonly.lma.utils
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import ru.gildor.coroutines.okhttp.await
-import java.io.FileOutputStream
 import java.io.InputStream
 import java.net.URL
-import java.net.URLConnection
-import kotlin.io.path.Path
 
 @OptIn(ExperimentalStdlibApi::class)
 class GiteeFile(
