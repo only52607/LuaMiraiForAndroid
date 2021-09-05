@@ -16,10 +16,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.navigation
 import com.ooooonly.lma.R
+import com.ooooonly.lma.di.AppContainer
 import com.ooooonly.lma.log.LogViewModel
 import com.ooooonly.lma.mirai.MiraiViewModel
 import com.ooooonly.lma.script.ScriptViewModel
-import com.ooooonly.lma.model.viewmodel.ViewModelContainer
 import com.ooooonly.lma.ui.about.AboutScreen
 import com.ooooonly.lma.ui.bot.BotScreen
 import com.ooooonly.lma.ui.bot.edit.EditBotScreen
@@ -36,9 +36,8 @@ fun LuaMiraiNavGraph(
     navController: NavHostController,
     scaffoldState: ScaffoldState,
     startDestination: String = Screen.Bot.route,
-    scriptCenterRoot: GiteeFile,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    viewModelContainer: ViewModelContainer,
+    appContainer: AppContainer
 ) {
     val navigationIcon: @Composable () -> Unit = {
         IconButton(onClick = {
@@ -54,19 +53,19 @@ fun LuaMiraiNavGraph(
     NavHost(navController = navController, startDestination = startDestination) {
         addBotTopLevel(
             navController = navController,
-            miraiViewModel = viewModelContainer.miraiViewModel,
+            miraiViewModel = appContainer.miraiViewModel,
             scaffoldState = scaffoldState,
             navigationIcon = navigationIcon
         )
         addScriptTopLevel(
             navController = navController,
-            scriptViewModel = viewModelContainer.scriptViewModel,
+            scriptViewModel = appContainer.scriptViewModel,
             navigationIcon = navigationIcon,
-            scriptCenterRoot = scriptCenterRoot,
+            scriptCenterRoot = appContainer.scriptCenterRoot,
         )
         addLogTopLevel(
             navController = navController,
-            logViewModel = viewModelContainer.logViewModel,
+            logViewModel = appContainer.logViewModel,
             navigationIcon = navigationIcon
         )
         addAbout(

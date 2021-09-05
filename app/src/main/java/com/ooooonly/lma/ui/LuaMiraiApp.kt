@@ -24,25 +24,19 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ooooonly.lma.R
-import com.ooooonly.lma.mirai.LoginSolverDelegate
-import com.ooooonly.lma.model.viewmodel.ViewModelContainer
+import com.ooooonly.lma.di.AppContainer
 import com.ooooonly.lma.ui.drawer.AppDrawer
 import com.ooooonly.lma.ui.loginsolver.LoginSolverViewHost
 import com.ooooonly.lma.ui.navigation.LuaMiraiBottomNavigationBar
 import com.ooooonly.lma.ui.navigation.LuaMiraiNavGraph
 import com.ooooonly.lma.ui.navigation.Screen
 import com.ooooonly.lma.ui.theme.LuaMiraiForAndroidTheme
-import com.ooooonly.lma.utils.GiteeFile
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun LuaMiraiApp(
-    viewModelContainer: ViewModelContainer,
-    loginSolverDelegate: LoginSolverDelegate,
-    scriptCenterRoot: GiteeFile
-) {
+fun LuaMiraiApp(appContainer: AppContainer) {
     LuaMiraiForAndroidTheme {
         ProvideWindowInsets {
             val systemUiController = rememberSystemUiController()
@@ -80,12 +74,11 @@ fun LuaMiraiApp(
                     LuaMiraiNavGraph(
                         navController = navController,
                         scaffoldState = scaffoldState,
-                        viewModelContainer = viewModelContainer,
-                        scriptCenterRoot = scriptCenterRoot
+                        appContainer = appContainer
                     )
                 }
             }
-            LoginSolverViewHost(loginSolverDelegate)
+            LoginSolverViewHost(appContainer.loginSolverDelegate)
             NotificationPermissionCheckDialogHost()
         }
     }

@@ -6,11 +6,10 @@ import android.os.Build
 import android.os.IBinder
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.snapshotFlow
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ooooonly.lma.MainActivity
 import com.ooooonly.lma.R
+import com.ooooonly.lma.di.AppContainer
 import com.ooooonly.lma.mirai.BotPhase
-import com.ooooonly.lma.model.viewmodel.ViewModelContainer
 import com.ooooonly.lma.script.ScriptPhase
 import com.ooooonly.lma.service.binder.MainServiceBinder
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,8 +22,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainService : Service(), CoroutineScope by MainScope() {
-    @Inject
-    lateinit var viewModelContainer: ViewModelContainer
+    @Inject lateinit var appContainer: AppContainer
 
     companion object {
         const val NOTIFICATION_MAIN = 1
@@ -79,8 +77,8 @@ class MainService : Service(), CoroutineScope by MainScope() {
         startForeground(NOTIFICATION_MAIN, getMainNotification(getString(R.string.notification_message).format(0, 0)))
         launch {
             snapshotFlow {
-                val onlineBotSize = viewModelContainer.miraiViewModel.botStates.filter { it.phase is BotPhase.Instantiated.Online }.size
-                val enableScriptSize = viewModelContainer.scriptViewModel.scripts.filter { it.phase is ScriptPhase.Enabled }.size
+                val onlineBotSize = appContainer.miraiViewModel.botStates.filter { it.phase is BotPhase.Instantiated.Online }.size
+                val enableScriptSize = appContainer.scriptViewModel.scripts.filter { it.phase is ScriptPhase.Enabled }.size
                 getString(R.string.notification_message).format(onlineBotSize, enableScriptSize)
             }.collect {
                 notificationManager.notify(NOTIFICATION_MAIN, getMainNotification(it))
