@@ -40,19 +40,21 @@ fun GiteeScriptItem(
                 )
             }
         }
-        Box {
-            var expanded by remember { mutableStateOf(false) }
-            IconButton(onClick = { expanded = true }) {
-                Icon(Icons.Filled.MoreVert, contentDescription = "More")
-            }
-            DropdownMenu(expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                DropdownMenuItem(onClick = {
-                    expanded = false
-                    onImport()
-                }) {
-                    Text(stringResource(R.string.script_import))
+        if (file.isFile) {
+            Box {
+                var expanded by remember { mutableStateOf(false) }
+                IconButton(onClick = { expanded = true }) {
+                    Icon(Icons.Filled.MoreVert, contentDescription = "More")
+                }
+                DropdownMenu(expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    DropdownMenuItem(onClick = {
+                        expanded = false
+                        onImport()
+                    }) {
+                        Text(stringResource(R.string.script_import))
+                    }
                 }
             }
         }
