@@ -1,21 +1,22 @@
 package com.ooooonly.lma.script
 
+import android.content.ContentResolver
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.ooooonly.lma.data.dao.ScriptDao
+import com.ooooonly.lma.log.LogViewModel
 import com.ooooonly.lma.model.AppFiles
 import com.ooooonly.lma.model.entity.LogEntity
 import com.ooooonly.lma.model.entity.ScriptEntity
-import com.ooooonly.lma.log.LogViewModel
-import com.ooooonly.lma.ui.navigation.Screen
-import com.ooooonly.luaMirai.base.*
+import com.ooooonly.luaMirai.base.ScriptLang
 import kotlinx.coroutines.*
 import net.mamoe.mirai.utils.MiraiInternalApi
 import java.io.File
-import java.io.InputStream
 import java.net.URL
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -28,7 +29,8 @@ class ScriptViewModel @Inject constructor(
     private val scriptDao: ScriptDao,
     private val appFiles: AppFiles,
     private val logViewModel: LogViewModel,
-    private val scriptBuilder: ScriptBuilder
+    private val scriptBuilder: ScriptBuilder,
+    private val contentResolver: ContentResolver
 ) : CoroutineScope {
     private val scriptDispatcher = Executors.newFixedThreadPool(2).asCoroutineDispatcher()
     override val coroutineContext: CoroutineContext = SupervisorJob()
@@ -118,7 +120,7 @@ class ScriptViewModel @Inject constructor(
                     } else {
                         this@update.phase = ScriptPhase.Disabled(phase.instance)
                     }
-                } catch (e :Exception) {
+                } catch (e: Exception) {
                     this@update.error(e)
                     this@update.phase = ScriptPhase.FailedOnUpdating(phase.instance, e)
                 }
@@ -129,16 +131,26 @@ class ScriptViewModel @Inject constructor(
         job.start()
     }
 
-    private fun createScriptState(entity: ScriptEntity): ScriptState {
+    private fun ScriptEntity.clear() {
+        if (this.type == ScriptEntity.TYPE_FILE) {
+            val file = File(this.source)
+            if (file.exists() && file.canonicalPath.startsWith(appFiles.scriptDirectory.canonicalPath)) {
+                file.delete()
+            }
+        }
+    }
+
+    private fun createScriptState(entity: ScriptEntity, prepare: (suspend () -> Unit)? = null): ScriptState {
         return ScriptState(entity).also { state ->
             _scripts.add(state)
-            val creatingJob = launch {
+            val creatingJob = launch(start = CoroutineStart.LAZY) {
                 withContext(Dispatchers.Default) {
                     val instance = try {
+                        prepare?.invoke()
                         scriptBuilder.buildBotScript(entity)
                     } catch (e: Exception) {
                         state.error(e)
-                        Log.e("script","failed on creating" ,e)
+                        Log.e("script", "failed on creating", e)
                         state.phase = ScriptPhase.FailedOnCreating(e)
                         return@withContext
                     }
@@ -149,6 +161,7 @@ class ScriptViewModel @Inject constructor(
                 }
             }
             state.phase = ScriptPhase.Creating(creatingJob)
+            creatingJob.start()
         }
     }
 
@@ -185,6 +198,35 @@ class ScriptViewModel @Inject constructor(
         }
     }
 
+    fun addScript(uri: Uri?, lang: ScriptLang = ScriptLang.Lua) {
+        if (uri == null) return
+        contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        when (uri.scheme) {
+            ContentResolver.SCHEME_FILE -> addScript(File(uri.path!!))
+            else -> {
+                val tempFile = File(appFiles.scriptDirectory, System.currentTimeMillis().toString())
+                val entity = ScriptEntity(
+                    source = tempFile.path,
+                    type = ScriptEntity.TYPE_FILE,
+                    enabled = false,
+                    lang = lang
+                )
+                createScriptState(entity) {
+                    withContext(Dispatchers.IO) {
+                        contentResolver.openInputStream(uri).use { input ->
+                            tempFile.outputStream().use { output ->
+                                input?.copyTo(output)
+                            }
+                        }
+                    }
+                }
+                launch {
+                    entity.id = scriptDao.saveScript(entity)
+                }
+            }
+        }
+    }
+
     fun enableScript(scriptState: ScriptState) {
         scriptState.enable()
         Log.d("script", "enable " + scriptState.entity.id.toString())
@@ -206,6 +248,7 @@ class ScriptViewModel @Inject constructor(
         scriptState.disable()
         _scripts.remove(scriptState)
         launch {
+            scriptState.entity.clear()
             scriptDao.deleteScript(scriptState.entity)
         }
     }

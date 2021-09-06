@@ -70,7 +70,7 @@ fun ScriptScreen(
                         onUpdateScriptSelected = {
                             coroutineScope.launch { drawerState.close() }
                             currentScript?.let(scriptViewModel::updateScript)
-                        }
+                        },
                     )
                 }
             } else {
@@ -79,19 +79,9 @@ fun ScriptScreen(
                         coroutineScope.launch { drawerState.close() }
                         activityResultRegistry?.register(
                             "ADD_SCRIPT_${startActivityAtomic.getAndIncrement()}",
-                            ActivityResultContracts.OpenDocument()
-                        ) { uri ->
-                            if (uri == null) return@register
-                            contentResolver.takePersistableUriPermission(
-                                uri,
-                                Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            )
-                            Log.d("script", uri.toString())
-                            when(uri.scheme) {
-                                SCHEME_FILE -> scriptViewModel.addScript(File(uri.path!!))
-                                else -> Toast.makeText(context, unsupportedUriText, Toast.LENGTH_SHORT).show()
-                            }
-                        }?.launch(arrayOf("*/*"))
+                            ActivityResultContracts.OpenDocument(),
+                            scriptViewModel::addScript
+                        )?.launch(arrayOf("*/*"))
                     },
                     onAddScriptFromURLSelected = {
                         coroutineScope.launch { drawerState.close() }

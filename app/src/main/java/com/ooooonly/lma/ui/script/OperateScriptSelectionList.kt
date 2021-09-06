@@ -7,11 +7,13 @@ import androidx.compose.runtime.Composable
 import com.ooooonly.lma.R
 import com.ooooonly.lma.ui.components.selection.SelectionItem
 import com.ooooonly.lma.ui.components.selection.SelectionList
+import com.ooooonly.luaMirai.base.BotScriptSource
+import com.ooooonly.luaMirai.base.BotScriptURLSource
 
 @Composable
 fun OperateScriptSelectionList(
     onDeleteScriptSelected: () -> Unit,
-    onUpdateScriptSelected: () -> Unit,
+    onUpdateScriptSelected: () -> Unit
 ) {
     val deleteScriptItem = SelectionItem.ImageVectorIcon(
         color = MaterialTheme.colors.error,
@@ -26,5 +28,5 @@ fun OperateScriptSelectionList(
         iconImageVector = Icons.Filled.Update,
         onClick = onUpdateScriptSelected
     )
-    SelectionList(items = listOf(updateScriptItem, deleteScriptItem))
+    SelectionList(items = listOf(deleteScriptItem))
 }

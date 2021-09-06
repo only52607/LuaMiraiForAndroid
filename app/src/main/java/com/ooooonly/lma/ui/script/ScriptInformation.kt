@@ -46,10 +46,12 @@ fun ScriptInformation(
             Subtitle2("${stringResource(R.string.script_label_size)}:")
             Text(instance.source?.size?.readableFileSize ?: "")
         }
-        Spacer(Modifier.height(16.dp))
-        Row(Modifier.fillMaxWidth()) {
-            Subtitle2("${stringResource(R.string.script_label_source)}:")
-            Text(instance.source?.brief ?: "")
+        if (instance.source is BotScriptURLSource) {
+            Spacer(Modifier.height(16.dp))
+            Row(Modifier.fillMaxWidth()) {
+                Subtitle2("${stringResource(R.string.script_label_source)}:")
+                Text(instance.source?.brief ?: "")
+            }
         }
         Spacer(Modifier.height(16.dp))
         Row(Modifier.fillMaxWidth()) {
