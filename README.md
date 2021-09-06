@@ -21,7 +21,7 @@ https://install.appcenter.ms/users/ooooonly/apps/luamirai/distribution_groups/pu
 
 - [x] 可视化日志系统，自定义过滤参数
 
-- [ ] 脚本统一下载中心
+- [x] 脚本统一下载中心
 
 - [ ] MiraiConsole插件兼容化
 
