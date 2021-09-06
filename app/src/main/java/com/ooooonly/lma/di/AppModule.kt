@@ -1,5 +1,6 @@
 package com.ooooonly.lma.di
 
+import android.content.ContentResolver
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
@@ -35,5 +36,13 @@ class AppModule {
         @ApplicationContext appContext: Context
     ): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(appContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideContentResolver(
+        @ApplicationContext appContext: Context
+    ): ContentResolver {
+        return appContext.contentResolver
     }
 }
