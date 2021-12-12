@@ -13,6 +13,11 @@
 
 https://install.appcenter.ms/users/ooooonly/apps/luamirai/distribution_groups/public
 
+# 应用截图
+![snapshot1](./snapshots/snapshot1.jpg)
+![snapshot2](./snapshots/snapshot2.jpg)
+![snapshot3](./snapshots/snapshot3.jpg)
+
 # 主要功能
 
 - [x] 完全可视化的多脚本管理功能
