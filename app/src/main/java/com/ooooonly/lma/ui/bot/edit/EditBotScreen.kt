@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import com.ooooonly.lma.R
-import com.ooooonly.lma.model.entity.BotEntity
+import com.ooooonly.lma.datastore.entity.BotEntity
 import com.ooooonly.lma.mirai.MiraiViewModel
 import com.ooooonly.lma.utils.fromJsonString
 import kotlinx.coroutines.CoroutineScope

@@ -2,25 +2,24 @@ package com.ooooonly.lma.mirai.impl
 
 import android.content.SharedPreferences
 import com.ooooonly.lma.mirai.BotConstructor
-import com.ooooonly.lma.mirai.BotLoggerSupplier
 import com.ooooonly.lma.mirai.LoginSolverDelegate
-import com.ooooonly.lma.mirai.NetworkLoggerSupplier
-import com.ooooonly.lma.model.AppFiles
-import com.ooooonly.lma.model.entity.BotEntity
+import com.ooooonly.lma.AppFiles
+import com.ooooonly.lma.datastore.entity.BotEntity
+import com.ooooonly.lma.log.LmaLogger
 import com.ooooonly.lma.utils.getBooleanSafe
 import com.ooooonly.lma.utils.getIntSafe
 import com.ooooonly.lma.utils.getLongSafe
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.BotFactory
 import net.mamoe.mirai.utils.BotConfiguration
+import net.mamoe.mirai.utils.SimpleLogger
 import java.io.File
 import javax.inject.Inject
 
 class BotConstructorImpl @Inject constructor(
     private val appFiles: AppFiles,
     private val loginSolverDelegate: LoginSolverDelegate,
-    private val botLoggerSupplier: BotLoggerSupplier,
-    private val networkLoggerSupplier: NetworkLoggerSupplier,
+    private val lmaLogger: LmaLogger,
     private val sharedPreferences: SharedPreferences
 ): BotConstructor {
     override fun createBot(entity: BotEntity): Bot {
@@ -32,8 +31,24 @@ class BotConstructorImpl @Inject constructor(
                 deviceInfo = { _ -> entity.deviceInfo }
                 protocol = entity.protocol
                 loginSolver = loginSolverDelegate
-                botLoggerSupplier = this@BotConstructorImpl.botLoggerSupplier::supply
-                networkLoggerSupplier = this@BotConstructorImpl.networkLoggerSupplier::supply
+                botLoggerSupplier = { bot ->
+                    SimpleLogger { priority: SimpleLogger.LogPriority, message: String?, e: Throwable? ->
+                        if (priority == SimpleLogger.LogPriority.ERROR) {
+                            lmaLogger.errorFromBotPrimary(bot, message ?: "")
+                        } else {
+                            lmaLogger.infoFromBotPrimary(bot, message ?: "")
+                        }
+                    }
+                }
+                networkLoggerSupplier = { bot ->
+                    SimpleLogger { priority: SimpleLogger.LogPriority, message: String?, e: Throwable? ->
+                        if (priority == SimpleLogger.LogPriority.ERROR) {
+                            lmaLogger.infoFromBotPrimary(bot, message ?: "")
+                        } else {
+                            lmaLogger.infoFromBotPrimary(bot, message ?: "")
+                        }
+                    }
+                }
                 heartbeatPeriodMillis = sharedPreferences.getLongSafe("heartbeatPeriodMillis", 60) * 1000
                 statHeartbeatPeriodMillis = sharedPreferences.getLongSafe("statHeartbeatPeriodMillis", 300) * 1000
                 heartbeatStrategy = when(sharedPreferences.getString("heartbeatStrategy", "STAT_HB")) {
@@ -43,8 +58,6 @@ class BotConstructorImpl @Inject constructor(
                     else -> BotConfiguration.HeartbeatStrategy.STAT_HB
                 }
                 heartbeatTimeoutMillis = sharedPreferences.getLongSafe("heartbeatTimeoutMillis", 5) * 1000
-                // firstReconnectDelayMillis = sharedPreferences.getLongSafe("firstReconnectDelayMillis", 5) * 1000
-                // reconnectPeriodMillis = sharedPreferences.getLongSafe("reconnectPeriodMillis", 5) * 1000
                 reconnectionRetryTimes = sharedPreferences.getIntSafe("reconnectionRetryTimes", Int.MAX_VALUE)
                 autoReconnectOnForceOffline = sharedPreferences.getBooleanSafe("autoReconnectOnForceOffline", false)
             })

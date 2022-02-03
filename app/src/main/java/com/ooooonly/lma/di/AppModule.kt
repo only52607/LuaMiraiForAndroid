@@ -4,10 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import com.ooooonly.lma.model.AppFiles
-import com.ooooonly.lma.log.LogViewModel
-import com.ooooonly.lma.mirai.MiraiViewModel
-import com.ooooonly.lma.script.ScriptViewModel
+import com.ooooonly.lma.AppFiles
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

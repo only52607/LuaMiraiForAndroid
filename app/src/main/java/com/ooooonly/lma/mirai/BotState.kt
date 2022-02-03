@@ -1,7 +1,7 @@
 package com.ooooonly.lma.mirai
 
 import androidx.compose.runtime.*
-import com.ooooonly.lma.model.entity.BotEntity
+import com.ooooonly.lma.datastore.entity.BotEntity
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.network.LoginFailedException
 

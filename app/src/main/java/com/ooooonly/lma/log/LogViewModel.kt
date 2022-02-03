@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.ooooonly.lma.data.dao.LogDao
-import com.ooooonly.lma.model.entity.LogEntity
+import com.ooooonly.lma.datastore.dao.LogDao
+import com.ooooonly.lma.datastore.entity.LogEntity
 import com.ooooonly.lma.utils.getIntSafe
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -22,7 +22,7 @@ import kotlin.coroutines.CoroutineContext
 class LogViewModel @Inject constructor(
     private val logDao: LogDao,
     private val preferences: SharedPreferences
-):CoroutineScope {
+):CoroutineScope, LmaLogger {
     override val coroutineContext: CoroutineContext = SupervisorJob()
 
     private var logBuffer = mutableListOf<LogEntity>()
@@ -108,7 +108,20 @@ class LogViewModel @Inject constructor(
         }
     }
 
-    fun insertLog(logEntity: LogEntity) {
+    override fun clear() {
+        launch {
+            clearBuffer()
+            logDao.deleteAllLog()
+        }
+    }
+
+    override fun log(from: Int, level: Int, identity: String, content: String) {
+        val logEntity = LogEntity(
+            from = from,
+            level = level,
+            identity = identity,
+            content = content
+        )
         launch {
             logEntity.id = logDao.saveLog(logEntity)
         }
@@ -117,13 +130,6 @@ class LogViewModel @Inject constructor(
             logBuffer.add(logEntity)
             _logs.value = logBuffer
             reduceBuffer()
-        }
-    }
-
-    fun clearLog() {
-        launch {
-            clearBuffer()
-            logDao.deleteAllLog()
         }
     }
 }

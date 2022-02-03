@@ -4,8 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.ooooonly.lma.data.dao.BotDao
-import com.ooooonly.lma.model.entity.BotEntity
+import com.ooooonly.lma.datastore.dao.BotDao
+import com.ooooonly.lma.datastore.entity.BotEntity
 import kotlinx.coroutines.*
 import net.mamoe.mirai.event.GlobalEventChannel
 import net.mamoe.mirai.event.events.*

@@ -8,12 +8,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.ooooonly.lma.data.dao.ScriptDao
-import com.ooooonly.lma.log.LogViewModel
-import com.ooooonly.lma.model.AppFiles
-import com.ooooonly.lma.model.entity.LogEntity
-import com.ooooonly.lma.model.entity.ScriptEntity
-import com.ooooonly.luaMirai.base.ScriptLang
+import com.ooooonly.lma.AppFiles
+import com.ooooonly.lma.datastore.dao.ScriptDao
+import com.ooooonly.lma.datastore.entity.ScriptEntity
+import com.ooooonly.lma.log.LmaLogger
 import kotlinx.coroutines.*
 import net.mamoe.mirai.utils.MiraiInternalApi
 import java.io.File
@@ -28,8 +26,7 @@ import kotlin.coroutines.CoroutineContext
 class ScriptViewModel @Inject constructor(
     private val scriptDao: ScriptDao,
     private val appFiles: AppFiles,
-    private val logViewModel: LogViewModel,
-    private val scriptBuilder: ScriptBuilder,
+    private val lmaLogger: LmaLogger,
     private val contentResolver: ContentResolver
 ) : CoroutineScope {
     private val scriptDispatcher = Executors.newFixedThreadPool(2).asCoroutineDispatcher()

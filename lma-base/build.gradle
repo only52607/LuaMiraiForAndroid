@@ -1,0 +1,31 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+repositories {
+    maven { url 'https://maven.aliyun.com/repository/public' }
+    maven { url 'https://maven.aliyun.com/repository/google' }
+    maven { url 'https://jitpack.io' }
+    google()
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    api "com.google.dagger:hilt-android:2.39.1"
+
+    api "org.jetbrains.kotlin:kotlin-stdlib:1.6.10"
+    api "org.jetbrains.kotlin:kotlin-reflect:1.6.10"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1"
+
+    api ("com.github.only52607.lua-mirai:lua-mirai-core:2.4.0-alpha.2"){
+        exclude module: "atomicfu", group: "org.jetbrains.kotlinx"
+    }
+    runtimeOnly ("com.github.only52607.lua-mirai:lua-mirai-adapter-luakt:2.4.0-alpha.2"){
+        exclude module: "atomicfu", group: "org.jetbrains.kotlinx"
+    }
+    api ("net.mamoe:mirai-core:2.9.2") {
+        exclude module: "atomicfu", group: "org.jetbrains.kotlinx"
+    }
+    api "org.jetbrains.kotlinx:atomicfu-jvm:0.16.3"
+}

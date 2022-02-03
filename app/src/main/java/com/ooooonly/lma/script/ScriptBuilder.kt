@@ -1,7 +1,7 @@
 package com.ooooonly.lma.script
 
-import com.ooooonly.lma.model.entity.ScriptEntity
-import com.ooooonly.luaMirai.base.BotScript
+import com.github.only52607.luamirai.core.script.BotScript
+import com.ooooonly.lma.datastore.entity.ScriptEntity
 
 interface ScriptBuilder {
     suspend fun buildBotScript(entity: ScriptEntity): BotScript

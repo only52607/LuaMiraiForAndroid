@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.ooooonly.lma.R
 import com.ooooonly.lma.log.LogState
-import com.ooooonly.lma.model.entity.LogEntity
+import com.ooooonly.lma.datastore.entity.LogEntity
 import com.ooooonly.lma.log.LogViewModel
 import com.ooooonly.lma.ui.components.EmptyView
 import kotlinx.coroutines.launch

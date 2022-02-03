@@ -2,7 +2,7 @@ package com.ooooonly.lma.mcl.impl
 
 import com.ooooonly.lma.log.LogViewModel
 import com.ooooonly.lma.mcl.MclLoggerProvider
-import com.ooooonly.lma.model.entity.LogEntity
+import com.ooooonly.lma.datastore.entity.LogEntity
 import net.mamoe.mirai.utils.MiraiLogger
 import net.mamoe.mirai.utils.SimpleLogger
 import javax.inject.Inject

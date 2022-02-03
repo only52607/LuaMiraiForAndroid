@@ -5,7 +5,7 @@ import androidx.annotation.RequiresApi
 import com.ooooonly.lma.BuildConfig
 import com.ooooonly.lma.mcl.MclLoggerProvider
 import com.ooooonly.lma.mirai.LoginSolverDelegate
-import com.ooooonly.lma.model.AppFiles
+import com.ooooonly.lma.AppFiles
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
