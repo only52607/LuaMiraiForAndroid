@@ -1,15 +1,15 @@
 package com.ooooonly.lma.mirai
 
 import androidx.compose.runtime.*
-import com.ooooonly.lma.datastore.entity.BotEntity
+import com.ooooonly.lma.datastore.entity.BotItem
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.network.LoginFailedException
 
 class BotState(
-    entity: BotEntity
+    item: BotItem
 ) {
     var phase: BotPhase by mutableStateOf(BotPhase.UnInstantiated)
-    var entity: BotEntity by mutableStateOf(entity)
+    var item: BotItem by mutableStateOf(item)
 }
 
 sealed class BotPhase(val description: String) {

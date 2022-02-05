@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.ooooonly.lma.datastore.dao.BotDao
-import com.ooooonly.lma.datastore.entity.BotEntity
+import com.ooooonly.lma.datastore.entity.BotItem
 import kotlinx.coroutines.*
 import net.mamoe.mirai.event.GlobalEventChannel
 import net.mamoe.mirai.event.events.*
@@ -36,7 +36,7 @@ class MiraiViewModel @Inject constructor(
     }
 
     private fun findBotStateById(botId: Long): BotState? {
-        return botStates.find { it.entity.id == botId }
+        return botStates.find { it.item.id == botId }
     }
 
     private fun subscribeBotEvent() {
@@ -67,27 +67,27 @@ class MiraiViewModel @Inject constructor(
         }
     }
 
-    fun saveBotByParameter(botEntity: BotEntity, originId: Long? = null) {
+    fun saveBotByParameter(botItem: BotItem, originId: Long? = null) {
         if (originId != null) {
             val originState = findBotStateById(originId)
             if (originState != null) {
                 launch {
-                    botDao.deleteBots(originState.entity)
+                    botDao.deleteBots(originState.item)
                 }
-                originState.entity = botEntity
+                originState.item = botItem
             }
         } else {
-            _botStates.add(BotState(botEntity).also {
-                if (botEntity.autoLogin) loginBotState(it)
+            _botStates.add(BotState(botItem).also {
+                if (botItem.autoLogin) loginBotState(it)
             })
         }
         launch {
-            botDao.saveBots(botEntity)
+            botDao.saveBots(botItem)
         }
     }
 
     fun loginBotState(botState: BotState) {
-        val botInstance = botConstructor.createBot(botState.entity)
+        val botInstance = botConstructor.createBot(botState.item)
         botState.phase = BotPhase.Instantiated.Logging(botInstance)
         launch {
             try {
@@ -118,7 +118,7 @@ class MiraiViewModel @Inject constructor(
     fun removeBotState(botState: BotState) {
         closeBotState(botState)
         launch {
-            botDao.deleteBots(botState.entity)
+            botDao.deleteBots(botState.item)
         }
         _botStates.remove(botState)
     }

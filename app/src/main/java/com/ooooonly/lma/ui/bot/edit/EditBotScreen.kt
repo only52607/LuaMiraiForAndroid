@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import com.ooooonly.lma.R
-import com.ooooonly.lma.datastore.entity.BotEntity
+import com.ooooonly.lma.datastore.entity.BotItem
 import com.ooooonly.lma.mirai.MiraiViewModel
 import com.ooooonly.lma.utils.fromJsonString
 import kotlinx.coroutines.CoroutineScope
@@ -29,14 +29,14 @@ fun EditBotScreen(
             onBack()
         },
         onBack = onBack,
-        botParamState = rememberBotParamState(miraiViewModel.botStates.find { it.entity.id == fromBotId }?.entity),
+        botParamState = rememberBotParamState(miraiViewModel.botStates.find { it.item.id == fromBotId }?.item),
         title = fromBotId?.let { stringResource(R.string.edit_bot_edit_title) } ?: stringResource(R.string.edit_bot_create_title)
     )
 }
 
 @Composable
 fun EditBotScreen(
-    onFinish: (BotEntity) -> Unit,
+    onFinish: (BotItem) -> Unit,
     onBack: () -> Unit,
     snackbarHostState: SnackbarHostState,
     botParamState: BotParamState,
@@ -73,8 +73,8 @@ fun EditBotScreen(
     }
 }
 
-fun buildBotConstructionParameter(createBotState: BotParamState): BotEntity {
-    return BotEntity(
+fun buildBotConstructionParameter(createBotState: BotParamState): BotItem {
+    return BotItem(
         id = try { createBotState.id.toLong() } catch (e:Exception) { throw Exception("ID格式不正确") },
         password = createBotState.password.also { it.ifEmpty { throw Exception("密码不能为空") }},
         protocol = createBotState.protocol,

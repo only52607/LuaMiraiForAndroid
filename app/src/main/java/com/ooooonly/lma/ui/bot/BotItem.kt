@@ -31,9 +31,9 @@ fun BotItem(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = rememberImagePainter(data = getAvatarUrlById(botState.entity.id)),
+                painter = rememberImagePainter(data = getAvatarUrlById(botState.item.id)),
                 modifier = Modifier.size(32.dp).clip(CircleShape),
-                contentDescription = "Avatar image of ${botState.entity.id}"
+                contentDescription = "Avatar image of ${botState.item.id}"
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column {
@@ -42,7 +42,7 @@ fun BotItem(
                     style = MaterialTheme.typography.subtitle2
                 )
                 Text(
-                    text = botState.entity.id.toString(),
+                    text = botState.item.id.toString(),
                     style = MaterialTheme.typography.body2
                 )
             }
@@ -50,7 +50,7 @@ fun BotItem(
         Row(verticalAlignment = Alignment.CenterVertically) {
             BotPhaseBadge(botState.phase)
             Spacer(modifier = Modifier.width(16.dp))
-            MiraiProtocolIcon(botState.entity.protocol)
+            MiraiProtocolIcon(botState.item.protocol)
         }
     }
 }

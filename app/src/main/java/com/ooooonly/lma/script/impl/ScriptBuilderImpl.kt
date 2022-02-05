@@ -2,10 +2,9 @@ package com.ooooonly.lma.script.impl
 
 import android.util.Log
 import com.ooooonly.lma.datastore.dao.ScriptDao
-import com.ooooonly.lma.datastore.entity.LogEntity
-import com.ooooonly.lma.datastore.entity.ScriptEntity
+import com.ooooonly.lma.datastore.entity.LogItem
+import com.ooooonly.lma.datastore.entity.ScriptItem
 import com.ooooonly.lma.script.ScriptBuilder
-import com.ooooonly.lma.log.LogViewModel
 import com.ooooonly.lma.utils.outputStreamOf
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -30,9 +29,9 @@ class ScriptBuilderImpl @Inject constructor(
         return PrintStream(outputStreamOf {
             Log.d("script", it)
             logViewModel.insertLog(
-                LogEntity(
-                    from = LogEntity.FROM_SCRIPT,
-                    level = LogEntity.LEVEL_INFO,
+                LogItem(
+                    from = LogItem.FROM_SCRIPT,
+                    level = LogItem.LEVEL_INFO,
                     content = it,
                     identity = script.header["name"] ?: ""
                 )
@@ -44,9 +43,9 @@ class ScriptBuilderImpl @Inject constructor(
         return PrintStream(outputStreamOf {
             Log.d("script", it)
             logViewModel.insertLog(
-                LogEntity(
-                    from = LogEntity.FROM_SCRIPT,
-                    level = LogEntity.LEVEL_ERROR,
+                LogItem(
+                    from = LogItem.FROM_SCRIPT,
+                    level = LogItem.LEVEL_ERROR,
                     content = it,
                     identity = script.header["name"] ?: ""
                 )
@@ -57,9 +56,9 @@ class ScriptBuilderImpl @Inject constructor(
     private fun scriptCoroutineContext(script: BotScript): CoroutineContext {
         return CoroutineExceptionHandler { coroutineContext, throwable ->
             logViewModel.insertLog(
-                LogEntity(
-                    from = LogEntity.FROM_SCRIPT,
-                    level = LogEntity.LEVEL_ERROR,
+                LogItem(
+                    from = LogItem.FROM_SCRIPT,
+                    level = LogItem.LEVEL_ERROR,
                     content = throwable.stackTraceToString(),
                     identity = script.header["name"] ?: ""
                 )
@@ -67,29 +66,29 @@ class ScriptBuilderImpl @Inject constructor(
         }
     }
 
-    override suspend fun buildBotScript(entity: ScriptEntity): BotScript =
-        when (entity.type) {
-            ScriptEntity.TYPE_FILE -> {
-                val file = File(entity.source)
+    override suspend fun buildBotScript(item: ScriptItem): BotScript =
+        when (item.type) {
+            ScriptItem.TYPE_FILE -> {
+                val file = File(item.source)
                 if (!file.exists()) throw FileNotFoundException("找不到文件")
                 BotScriptFactory.buildBotScript(
-                    entity.lang,
+                    item.lang,
                     file,
                     stdout = ::scriptStdPrintStreamBuilder,
                     stderr = ::scriptErrPrintStreamBuilder,
                     extraCoroutineContext = ::scriptCoroutineContext
                 )
             }
-            ScriptEntity.TYPE_URL -> BotScriptFactory.buildBotScript(
-                entity.lang,
-                entity.source.toURL(),
+            ScriptItem.TYPE_URL -> BotScriptFactory.buildBotScript(
+                item.lang,
+                item.source.toURL(),
                 stdout = ::scriptStdPrintStreamBuilder,
                 stderr = ::scriptErrPrintStreamBuilder,
                 extraCoroutineContext = ::scriptCoroutineContext
             )
-            ScriptEntity.TYPE_CONTENT -> BotScriptFactory.buildBotScript(
-                entity.lang,
-                entity.source,
+            ScriptItem.TYPE_CONTENT -> BotScriptFactory.buildBotScript(
+                item.lang,
+                item.source,
                 stdout = ::scriptStdPrintStreamBuilder,
                 stderr = ::scriptErrPrintStreamBuilder,
                 extraCoroutineContext = ::scriptCoroutineContext

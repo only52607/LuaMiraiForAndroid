@@ -12,8 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.ooooonly.lma.R
 import com.ooooonly.lma.log.LogState
-import com.ooooonly.lma.datastore.entity.LogEntity
-import com.ooooonly.lma.log.LogViewModel
+import com.ooooonly.lma.datastore.entity.LogItem
 import com.ooooonly.lma.ui.components.EmptyView
 import kotlinx.coroutines.launch
 
@@ -51,7 +50,7 @@ fun LogScreen(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LogScreen(
-    logs: List<LogEntity>,
+    logs: List<LogItem>,
     navigationIcon: @Composable () -> Unit,
     state: LazyListState,
     loading: Boolean = false,

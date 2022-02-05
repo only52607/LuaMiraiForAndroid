@@ -5,13 +5,13 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity(tableName = "log")
-data class LogEntity(
+data class LogItem(
     @PrimaryKey(autoGenerate = true) var id: Long? = null,
-    var from: Int = FROM_BOT_PRIMARY,
-    var level: Int = LEVEL_INFO,
-    var identity: String = "",
-    var content: String = "",
-    var date: Date = Date()
+    val from: Int = FROM_BOT_PRIMARY,
+    val level: Int = LEVEL_INFO,
+    val identity: String = "",
+    val content: String = "",
+    val date: Date = Date()
 ) {
     companion object {
         const val LEVEL_INFO = 0

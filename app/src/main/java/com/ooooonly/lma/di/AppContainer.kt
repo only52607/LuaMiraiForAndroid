@@ -1,6 +1,5 @@
 package com.ooooonly.lma.di
 
-import com.ooooonly.lma.log.LogViewModel
 import com.ooooonly.lma.mirai.LoginSolverDelegate
 import com.ooooonly.lma.mirai.MiraiViewModel
 import com.ooooonly.lma.script.ScriptViewModel

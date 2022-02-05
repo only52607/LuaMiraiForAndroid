@@ -1,16 +1,16 @@
 package com.ooooonly.lma.datastore.dao
 
 import androidx.room.*
-import com.ooooonly.lma.datastore.entity.ScriptEntity
+import com.ooooonly.lma.datastore.entity.ScriptItem
 
 @Dao
 interface ScriptDao {
     @Query("SELECT * FROM script")
-    suspend fun loadAllScripts(): Array<ScriptEntity>
+    suspend fun loadAllScripts(): Array<ScriptItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveScript(scripts: ScriptEntity): Long
+    suspend fun saveScript(scripts: ScriptItem): Long
 
     @Delete
-    suspend fun deleteScript(scripts: ScriptEntity)
+    suspend fun deleteScript(scripts: ScriptItem)
 }

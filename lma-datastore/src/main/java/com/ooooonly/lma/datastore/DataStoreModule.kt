@@ -1,6 +1,9 @@
 package com.ooooonly.lma.datastore
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.ooooonly.lma.datastore.dao.BotDao
 import com.ooooonly.lma.datastore.dao.LogDao
@@ -12,6 +15,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+
+val Context.logDataStore: DataStore<Preferences> by preferencesDataStore(name = "log")
 
 @InstallIn(SingletonComponent::class)
 @Module

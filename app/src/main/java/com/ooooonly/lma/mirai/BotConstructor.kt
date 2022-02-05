@@ -1,8 +1,8 @@
 package com.ooooonly.lma.mirai
 
-import com.ooooonly.lma.datastore.entity.BotEntity
+import com.ooooonly.lma.datastore.entity.BotItem
 import net.mamoe.mirai.Bot
 
 interface BotConstructor {
-    fun createBot(entity: BotEntity): Bot
+    fun createBot(item: BotItem): Bot
 }

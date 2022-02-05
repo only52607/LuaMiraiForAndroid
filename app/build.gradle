@@ -78,8 +78,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
 
     implementation project(":lma-base")
-    implementation project(":lma-utils")
     implementation project(":lma-datastore")
+    implementation project(":lma-utils")
+    implementation project(":lma-logger")
+    implementation project(":lma-script")
+    implementation project(":lma-bot")
 
     // compose
     implementation "androidx.compose.runtime:runtime:1.0.1"

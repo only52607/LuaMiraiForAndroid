@@ -1,8 +1,7 @@
 package com.ooooonly.lma.mcl.impl
 
-import com.ooooonly.lma.log.LogViewModel
 import com.ooooonly.lma.mcl.MclLoggerProvider
-import com.ooooonly.lma.datastore.entity.LogEntity
+import com.ooooonly.lma.datastore.entity.LogItem
 import net.mamoe.mirai.utils.MiraiLogger
 import net.mamoe.mirai.utils.SimpleLogger
 import javax.inject.Inject
@@ -14,18 +13,18 @@ class MclLoggerProviderImpl @Inject constructor(
         return SimpleLogger { priority: SimpleLogger.LogPriority, message: String?, e: Throwable? ->
             if (priority == SimpleLogger.LogPriority.ERROR) {
                 logViewModel.insertLog(
-                    LogEntity(
-                        from = LogEntity.FROM_MCL,
-                        level = LogEntity.LEVEL_ERROR,
+                    LogItem(
+                        from = LogItem.FROM_MCL,
+                        level = LogItem.LEVEL_ERROR,
                         content = message ?: "",
                         identity = identity.toString()
                     )
                 )
             } else {
                 logViewModel.insertLog(
-                    LogEntity(
-                        from = LogEntity.FROM_MCL,
-                        level = LogEntity.LEVEL_INFO,
+                    LogItem(
+                        from = LogItem.FROM_MCL,
+                        level = LogItem.LEVEL_INFO,
                         content = message ?: "",
                         identity = identity.toString()
                     )

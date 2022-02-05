@@ -17,7 +17,6 @@ import androidx.navigation.compose.navArgument
 import androidx.navigation.navigation
 import com.ooooonly.lma.R
 import com.ooooonly.lma.di.AppContainer
-import com.ooooonly.lma.log.LogViewModel
 import com.ooooonly.lma.mirai.MiraiViewModel
 import com.ooooonly.lma.script.ScriptViewModel
 import com.ooooonly.lma.ui.about.AboutScreen

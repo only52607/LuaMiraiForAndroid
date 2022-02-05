@@ -13,7 +13,10 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/lma-base" />
+            <option value="$PROJECT_DIR$/lma-bot" />
             <option value="$PROJECT_DIR$/lma-datastore" />
+            <option value="$PROJECT_DIR$/lma-logger" />
+            <option value="$PROJECT_DIR$/lma-script" />
             <option value="$PROJECT_DIR$/lma-utils" />
           </set>
         </option>

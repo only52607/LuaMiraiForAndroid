@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ooooonly.lma.R
-import com.ooooonly.lma.datastore.entity.BotEntity
+import com.ooooonly.lma.datastore.entity.BotItem
 import com.ooooonly.lma.ui.components.FormItem
 import com.ooooonly.lma.ui.components.MiraiProtocolDropDown
 import com.ooooonly.lma.utils.ripperClickable
@@ -118,7 +118,7 @@ class BotParamState(
 }
 
 @Composable
-fun rememberBotParamState(botParam: BotEntity? = null) = remember {
+fun rememberBotParamState(botParam: BotItem? = null) = remember {
     if (botParam == null) return@remember BotParamState()
     BotParamState(
         initialId = botParam.id.toString(),

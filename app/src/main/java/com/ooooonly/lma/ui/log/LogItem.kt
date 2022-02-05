@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.ooooonly.lma.log.LogDisplayState
-import com.ooooonly.lma.datastore.entity.LogEntity
+import com.ooooonly.lma.datastore.entity.LogItem
 import com.ooooonly.lma.utils.ripperClickable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,7 +30,7 @@ private fun Date.display(visible: Boolean, before: String = "", after: String = 
 
 @Composable
 fun LogItem(
-    logEntity: LogEntity,
+    logItem: LogItem,
     onClick: () -> Unit,
     displayState: LogDisplayState
 ) {
@@ -41,12 +41,12 @@ fun LogItem(
     ) {
         Text(
             "${
-                logEntity.date.display(displayState.showDate, after = " ")
+                logItem.date.display(displayState.showDate, after = " ")
             }${
-                if (displayState.showIdentity) "${logEntity.identity}->" else ""
-            }${logEntity.content}",
-            color = when(logEntity.level) {
-                LogEntity.LEVEL_ERROR -> MaterialTheme.colors.error
+                if (displayState.showIdentity) "${logItem.identity}->" else ""
+            }${logItem.content}",
+            color = when(logItem.level) {
+                LogItem.LEVEL_ERROR -> MaterialTheme.colors.error
                 else -> Color.Unspecified
             }
         )

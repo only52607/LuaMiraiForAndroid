@@ -8,10 +8,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.ooooonly.lma.AppFiles
 import com.ooooonly.lma.datastore.dao.ScriptDao
-import com.ooooonly.lma.datastore.entity.ScriptEntity
-import com.ooooonly.lma.log.LmaLogger
+import com.ooooonly.lma.datastore.entity.ScriptItem
+import com.ooooonly.lma.logger.LmaLogger
 import kotlinx.coroutines.*
 import net.mamoe.mirai.utils.MiraiInternalApi
 import java.io.File
@@ -26,7 +25,7 @@ import kotlin.coroutines.CoroutineContext
 class ScriptViewModel @Inject constructor(
     private val scriptDao: ScriptDao,
     private val appFiles: AppFiles,
-    private val lmaLogger: LmaLogger,
+    private val lmaLogger: com.ooooonly.lma.logger.LmaLogger,
     private val contentResolver: ContentResolver
 ) : CoroutineScope {
     private val scriptDispatcher = Executors.newFixedThreadPool(2).asCoroutineDispatcher()
@@ -62,7 +61,7 @@ class ScriptViewModel @Inject constructor(
                     from = LogEntity.FROM_SCRIPT,
                     level = LogEntity.LEVEL_ERROR,
                     content = cause.stackTraceToString(),
-                    identity = "Script: ${entity.id}"
+                    identity = "Script: ${item.id}"
                 )
             )
         }
@@ -128,8 +127,8 @@ class ScriptViewModel @Inject constructor(
         job.start()
     }
 
-    private fun ScriptEntity.clear() {
-        if (this.type == ScriptEntity.TYPE_FILE) {
+    private fun ScriptItem.clear() {
+        if (this.type == ScriptItem.TYPE_FILE) {
             val file = File(this.source)
             if (file.exists() && file.canonicalPath.startsWith(appFiles.scriptDirectory.canonicalPath)) {
                 file.delete()
@@ -137,14 +136,14 @@ class ScriptViewModel @Inject constructor(
         }
     }
 
-    private fun createScriptState(entity: ScriptEntity, prepare: (suspend () -> Unit)? = null): ScriptState {
-        return ScriptState(entity).also { state ->
+    private fun createScriptState(item: ScriptItem, prepare: (suspend () -> Unit)? = null): ScriptState {
+        return ScriptState(item).also { state ->
             _scripts.add(state)
             val creatingJob = launch(start = CoroutineStart.LAZY) {
                 withContext(Dispatchers.Default) {
                     val instance = try {
                         prepare?.invoke()
-                        scriptBuilder.buildBotScript(entity)
+                        scriptBuilder.buildBotScript(item)
                     } catch (e: Exception) {
                         state.error(e)
                         Log.e("script", "failed on creating", e)
@@ -152,7 +151,7 @@ class ScriptViewModel @Inject constructor(
                         return@withContext
                     }
                     state.phase = ScriptPhase.Disabled(instance)
-                    if (state.entity.enabled) {
+                    if (state.item.enabled) {
                         state.enable()
                     }
                 }
@@ -170,9 +169,9 @@ class ScriptViewModel @Inject constructor(
     }
 
     fun addScript(file: File, lang: ScriptLang = ScriptLang.Lua) {
-        val entity = ScriptEntity(
+        val entity = ScriptItem(
             source = file.path,
-            type = ScriptEntity.TYPE_FILE,
+            type = ScriptItem.TYPE_FILE,
             enabled = false,
             lang = lang
         )
@@ -183,9 +182,9 @@ class ScriptViewModel @Inject constructor(
     }
 
     fun addScript(url: URL, lang: ScriptLang = ScriptLang.Lua) {
-        val entity = ScriptEntity(
+        val entity = ScriptItem(
             source = url.toString(),
-            type = ScriptEntity.TYPE_URL,
+            type = ScriptItem.TYPE_URL,
             enabled = false,
             lang = lang
         )
@@ -202,9 +201,9 @@ class ScriptViewModel @Inject constructor(
             ContentResolver.SCHEME_FILE -> addScript(File(uri.path!!))
             else -> {
                 val tempFile = File(appFiles.scriptDirectory, System.currentTimeMillis().toString())
-                val entity = ScriptEntity(
+                val entity = ScriptItem(
                     source = tempFile.path,
-                    type = ScriptEntity.TYPE_FILE,
+                    type = ScriptItem.TYPE_FILE,
                     enabled = false,
                     lang = lang
                 )
@@ -226,18 +225,18 @@ class ScriptViewModel @Inject constructor(
 
     fun enableScript(scriptState: ScriptState) {
         scriptState.enable()
-        Log.d("script", "enable " + scriptState.entity.id.toString())
+        Log.d("script", "enable " + scriptState.item.id.toString())
         launch {
-            scriptState.entity.enabled = true
-            scriptDao.saveScript(scriptState.entity)
+            scriptState.item.enabled = true
+            scriptDao.saveScript(scriptState.item)
         }
     }
 
     fun disableScript(scriptState: ScriptState) {
         scriptState.disable()
         launch {
-            scriptState.entity.enabled = false
-            scriptDao.saveScript(scriptState.entity)
+            scriptState.item.enabled = false
+            scriptDao.saveScript(scriptState.item)
         }
     }
 
@@ -245,8 +244,8 @@ class ScriptViewModel @Inject constructor(
         scriptState.disable()
         _scripts.remove(scriptState)
         launch {
-            scriptState.entity.clear()
-            scriptDao.deleteScript(scriptState.entity)
+            scriptState.item.clear()
+            scriptDao.deleteScript(scriptState.item)
         }
     }
 

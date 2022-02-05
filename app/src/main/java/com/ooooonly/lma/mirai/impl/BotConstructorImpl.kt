@@ -3,9 +3,9 @@ package com.ooooonly.lma.mirai.impl
 import android.content.SharedPreferences
 import com.ooooonly.lma.mirai.BotConstructor
 import com.ooooonly.lma.mirai.LoginSolverDelegate
-import com.ooooonly.lma.AppFiles
-import com.ooooonly.lma.datastore.entity.BotEntity
-import com.ooooonly.lma.log.LmaLogger
+import com.ooooonly.lma.datastore.entity.BotItem
+import com.ooooonly.lma.di.BotWorkingDirectory
+import com.ooooonly.lma.logger.LmaLogger
 import com.ooooonly.lma.utils.getBooleanSafe
 import com.ooooonly.lma.utils.getIntSafe
 import com.ooooonly.lma.utils.getLongSafe
@@ -17,19 +17,19 @@ import java.io.File
 import javax.inject.Inject
 
 class BotConstructorImpl @Inject constructor(
-    private val appFiles: AppFiles,
+    @BotWorkingDirectory private val botWorkingDirBase: File,
     private val loginSolverDelegate: LoginSolverDelegate,
-    private val lmaLogger: LmaLogger,
+    private val lmaLogger: com.ooooonly.lma.logger.LmaLogger,
     private val sharedPreferences: SharedPreferences
 ): BotConstructor {
-    override fun createBot(entity: BotEntity): Bot {
+    override fun createBot(item: BotItem): Bot {
         return BotFactory.newBot(
-            entity.id,
-            entity.password,
+            item.id,
+            item.password,
             BotConfiguration.Default.apply {
-                workingDir = File(appFiles.botWorkingDirBase, entity.id.toString())
-                deviceInfo = { _ -> entity.deviceInfo }
-                protocol = entity.protocol
+                workingDir = File(botWorkingDirBase, item.id.toString())
+                deviceInfo = { _ -> item.deviceInfo }
+                protocol = item.protocol
                 loginSolver = loginSolverDelegate
                 botLoggerSupplier = { bot ->
                     SimpleLogger { priority: SimpleLogger.LogPriority, message: String?, e: Throwable? ->

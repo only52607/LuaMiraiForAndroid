@@ -30,7 +30,7 @@ fun BotScreen(
         onCreateBot = { toBotEditScreen(null) },
         onRemoveBotState = miraiViewModel::removeBotState,
         onReLoginBotState = miraiViewModel::reLoginBotState,
-        onEditBotState = { toBotEditScreen(it.entity.id) },
+        onEditBotState = { toBotEditScreen(it.item.id) },
         onCloseBotState = miraiViewModel::closeBotState,
         onLoginBotState = miraiViewModel::loginBotState,
         navigationIcon = navigationIcon,

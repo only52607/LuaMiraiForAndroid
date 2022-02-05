@@ -4,12 +4,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.github.only52607.luamirai.core.script.BotScript
-import com.ooooonly.lma.datastore.entity.ScriptEntity
+import com.ooooonly.lma.datastore.entity.ScriptItem
 import com.ooooonly.lma.datastore.entity.toBotScriptSource
 import kotlinx.coroutines.Job
 
-class ScriptState(val entity: ScriptEntity) {
-    val scriptSource = entity.toBotScriptSource()
+class ScriptState(val item: ScriptItem) {
+    val scriptSource = item.toBotScriptSource()
     var phase by mutableStateOf(ScriptPhase.InActive as ScriptPhase)
 }
 

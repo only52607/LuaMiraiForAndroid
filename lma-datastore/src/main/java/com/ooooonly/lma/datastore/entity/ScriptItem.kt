@@ -3,14 +3,14 @@ package com.ooooonly.lma.datastore.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.github.only52607.luamirai.core.script.BotScriptSource
-import com.ooooonly.lma.datastore.entity.ScriptEntity.Companion.TYPE_CONTENT
-import com.ooooonly.lma.datastore.entity.ScriptEntity.Companion.TYPE_FILE
-import com.ooooonly.lma.datastore.entity.ScriptEntity.Companion.TYPE_URL
+import com.ooooonly.lma.datastore.entity.ScriptItem.Companion.TYPE_CONTENT
+import com.ooooonly.lma.datastore.entity.ScriptItem.Companion.TYPE_FILE
+import com.ooooonly.lma.datastore.entity.ScriptItem.Companion.TYPE_URL
 import java.io.File
 import java.net.URL
 
 @Entity(tableName = "script")
-data class ScriptEntity(
+data class ScriptItem(
     @PrimaryKey(autoGenerate = true) var id: Long? = null,
     var source: String,
     var enabled: Boolean = false,
@@ -24,7 +24,7 @@ data class ScriptEntity(
     }
 }
 
-fun ScriptEntity.toBotScriptSource(): BotScriptSource =
+fun ScriptItem.toBotScriptSource(): BotScriptSource =
     when(type) {
         TYPE_FILE -> BotScriptSource.FileSource(File(source), lang)
         TYPE_URL -> BotScriptSource.URLSource(URL(source), lang)
@@ -33,8 +33,8 @@ fun ScriptEntity.toBotScriptSource(): BotScriptSource =
     }
 
 fun BotScriptSource.toScriptEntity() = when(this) {
-    is BotScriptSource.FileSource -> ScriptEntity(source = file.path, enabled = false, type = TYPE_FILE, lang = scriptLang)
-    is BotScriptSource.URLSource -> ScriptEntity(source = url.path, enabled = false, type = TYPE_URL, lang = scriptLang)
-    is BotScriptSource.StringSource -> ScriptEntity(source = content, enabled = false, type = TYPE_CONTENT, lang = scriptLang)
+    is BotScriptSource.FileSource -> ScriptItem(source = file.path, enabled = false, type = TYPE_FILE, lang = scriptLang)
+    is BotScriptSource.URLSource -> ScriptItem(source = url.path, enabled = false, type = TYPE_URL, lang = scriptLang)
+    is BotScriptSource.StringSource -> ScriptItem(source = content, enabled = false, type = TYPE_CONTENT, lang = scriptLang)
     else -> error("Unsupported BotScriptSource $this")
 }

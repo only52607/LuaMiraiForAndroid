@@ -7,7 +7,7 @@ import net.mamoe.mirai.utils.BotConfiguration
 import net.mamoe.mirai.utils.DeviceInfo
 
 @Entity(tableName = "bot")
-data class BotEntity(
+data class BotItem(
     @PrimaryKey val id: Long,
     val password: String,
     @ColumnInfo(name = "device_info")
