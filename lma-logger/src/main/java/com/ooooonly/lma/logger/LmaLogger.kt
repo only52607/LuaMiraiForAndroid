@@ -9,79 +9,87 @@ interface LmaLogger {
 
     suspend fun infoFromBotPrimary(
         bot: Bot,
-        content: String
+        content: String,
+        identity: String = "${bot.id}"
     ) = log(
         from = LogItem.FROM_BOT_PRIMARY,
         level = LogItem.LEVEL_INFO,
-        identity = "${bot.id}",
+        identity = identity,
         content = content
     )
 
     suspend fun infoFromBotNetwork(
         bot: Bot,
-        content: String
+        content: String,
+        identity: String = "${bot.id}"
     ) = log(
         from = LogItem.FROM_BOT_NETWORK,
         level = LogItem.LEVEL_INFO,
-        identity = "${bot.id}",
+        identity = identity,
         content = content
     )
 
     suspend fun infoFromMiraiConsole(
-        content: String
+        content: String,
+        identity: String = "Mirai Console"
     ) = log(
         from = LogItem.FROM_MCL,
         level = LogItem.LEVEL_INFO,
-        identity = "Mirai Console",
+        identity = identity,
         content = content
     )
 
     suspend fun infoFromScript(
         script: BotScript,
-        content: String
+        content: String,
+        identity: String = script.header?.get("name") ?: "Unknown script"
     ) = log(
         from = LogItem.FROM_SCRIPT,
         level = LogItem.LEVEL_INFO,
-        identity = script.header?.get("name") ?: "Unknown script",
+        identity = identity,
         content = content
     )
 
     suspend fun errorFromBotPrimary(
         bot: Bot,
-        content: String
+        content: String,
+        identity: String = "${bot.id}"
     ) = log(
         from = LogItem.FROM_BOT_PRIMARY,
         level = LogItem.LEVEL_ERROR,
-        identity = "${bot.id}",
+        identity = identity,
         content = content
     )
 
     suspend fun errorFromBotNetwork(
         bot: Bot,
-        content: String
+        content: String,
+        identity: String = "${bot.id}"
     ) = log(
         from = LogItem.FROM_BOT_NETWORK,
         level = LogItem.LEVEL_ERROR,
-        identity = "${bot.id}",
+        identity = identity,
         content = content
     )
 
     suspend fun errorFromMiraiConsole(
-        content: String
+        content: String,
+        identity: String = "Mirai Console"
     ) = log(
         from = LogItem.FROM_MCL,
         level = LogItem.LEVEL_ERROR,
-        identity = "Mirai Console",
+        identity = identity,
         content = content
     )
 
     suspend fun errorFromScript(
         script: BotScript,
-        content: String
+        content: String,
+        identity: String = script.header?.get("name") ?: "Unknown script"
     ) = log(
         from = LogItem.FROM_SCRIPT,
         level = LogItem.LEVEL_ERROR,
-        identity = script.header?.get("name") ?: "Unknown script",
+        identity = identity,
         content = content
     )
 }

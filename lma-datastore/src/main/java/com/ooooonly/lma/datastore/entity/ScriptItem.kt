@@ -23,18 +23,3 @@ data class ScriptItem(
         const val TYPE_CONTENT = 2
     }
 }
-
-fun ScriptItem.toBotScriptSource(): BotScriptSource =
-    when(type) {
-        TYPE_FILE -> BotScriptSource.FileSource(File(source), lang)
-        TYPE_URL -> BotScriptSource.URLSource(URL(source), lang)
-        TYPE_CONTENT -> BotScriptSource.StringSource(source, lang)
-        else -> error("Unknown source type $type")
-    }
-
-fun BotScriptSource.toScriptEntity() = when(this) {
-    is BotScriptSource.FileSource -> ScriptItem(source = file.path, enabled = false, type = TYPE_FILE, lang = scriptLang)
-    is BotScriptSource.URLSource -> ScriptItem(source = url.path, enabled = false, type = TYPE_URL, lang = scriptLang)
-    is BotScriptSource.StringSource -> ScriptItem(source = content, enabled = false, type = TYPE_CONTENT, lang = scriptLang)
-    else -> error("Unsupported BotScriptSource $this")
-}

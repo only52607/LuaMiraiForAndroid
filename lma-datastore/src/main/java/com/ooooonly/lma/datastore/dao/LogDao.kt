@@ -3,16 +3,17 @@ package com.ooooonly.lma.datastore.dao
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.ooooonly.lma.datastore.entity.LogItem
-import kotlinx.coroutines.flow.Flow
-
 
 @Dao
 interface LogDao {
     @Query("SELECT * FROM log")
-    fun loadAllLogs(): Flow<List<LogItem>>
+    suspend fun loadAllLogs(): List<LogItem>
 
     @Query("SELECT * FROM log order by id desc limit :count")
-    fun loadLastNLogs(count: Int): Flow<List<LogItem>>
+    suspend fun loadLastNLogs(count: Int): List<LogItem>
+
+    @Query("SELECT * FROM log where id < :id order by id desc limit :count")
+    suspend fun loadLogsBefore(id: Long, count: Int): List<LogItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveLog(logs: LogItem): Long
@@ -24,5 +25,5 @@ interface LogDao {
     suspend fun deleteAllLog()
 
     @RawQuery
-    fun getLogs(query: SupportSQLiteQuery): Flow<List<LogItem>>
+    fun loadLogs(query: SupportSQLiteQuery): List<LogItem>
 }

@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.ooooonly.lma.log.LogDisplayState
 import com.ooooonly.lma.datastore.entity.LogItem
 import com.ooooonly.lma.utils.ripperClickable
 import java.text.SimpleDateFormat

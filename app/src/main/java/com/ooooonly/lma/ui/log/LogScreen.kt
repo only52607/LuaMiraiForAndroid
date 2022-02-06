@@ -10,57 +10,29 @@ import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ooooonly.lma.R
-import com.ooooonly.lma.log.LogState
-import com.ooooonly.lma.datastore.entity.LogItem
 import com.ooooonly.lma.ui.components.EmptyView
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LogScreen(
-    logViewModel: LogViewModel,
+    logViewModel: LogScreenViewModel = viewModel(),
     navigationIcon: @Composable () -> Unit
 ) {
-    val logState = logViewModel.logState
     val listState = rememberLazyListState()
-    //    val isBottom by remember {
-    //        derivedStateOf {
-    //            listState.layoutInfo.totalItemsCount == listState.layoutInfo.visibleItemsInfo.size + listState.firstVisibleItemIndex
-    //        }
-    //    }
-    LaunchedEffect(logViewModel.logs) {
-        if (logState.autoScroll) {
+    val scaffoldState: BackdropScaffoldState =
+        rememberBackdropScaffoldState(BackdropValue.Concealed)
+    val coroutineScope = rememberCoroutineScope()
+    val logList by logViewModel.logItemList.collectAsState(listOf())
+    LaunchedEffect(logViewModel.logItemList) {
+        if (logViewModel.logDisplayState.autoScrollEnabled) {
             kotlin.runCatching {
                 listState.scrollToItem(listState.layoutInfo.totalItemsCount - listState.layoutInfo.visibleItemsInfo.size + 1)
             }
         }
     }
-    LogScreen(
-        logs = logViewModel.logs,
-        navigationIcon = navigationIcon,
-        state = listState,
-        loading = !logViewModel.initialized,
-        logState = logState,
-        onClearLog = {
-            logViewModel.clearLog()
-        }
-    )
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun LogScreen(
-    logs: List<LogItem>,
-    navigationIcon: @Composable () -> Unit,
-    state: LazyListState,
-    loading: Boolean = false,
-    logState: LogState,
-    onClearLog: () -> Unit
-) {
-    val scaffoldState: BackdropScaffoldState =
-        rememberBackdropScaffoldState(BackdropValue.Concealed)
-    val coroutineScope = rememberCoroutineScope()
-
     BackdropScaffold(
         scaffoldState = scaffoldState,
         appBar = {
@@ -69,7 +41,7 @@ fun LogScreen(
                 backgroundColor = MaterialTheme.colors.surface,
                 navigationIcon = navigationIcon,
                 actions = {
-                    IconButton(onClick = onClearLog) {
+                    IconButton(onClick = logViewModel::clearLog) {
                         Icon(Icons.Filled.Delete, contentDescription = null)
                     }
                     IconButton(
@@ -87,11 +59,11 @@ fun LogScreen(
         },
         backLayerBackgroundColor = MaterialTheme.colors.surface,
         frontLayerContent = {
-            if(logs.isEmpty()) {
+            if(logList.isEmpty()) {
                 EmptyView(pictureResId = R.drawable.bg_blank_4, messageResId = R.string.log_empty)
             } else {
                 LogList(
-                    logs = logs,
+                    logs = logList,
                     onClickLogEntity = {},
                     modifier = Modifier.fillMaxSize(),
                     listState = state,
