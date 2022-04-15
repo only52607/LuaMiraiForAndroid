@@ -7,13 +7,13 @@ import com.ooooonly.lma.datastore.entity.LogItem
 @Dao
 interface LogDao {
     @Query("SELECT * FROM log")
-    suspend fun loadAllLogs(): List<LogItem>
+    suspend fun selectAllLogs(): List<LogItem>
 
     @Query("SELECT * FROM log order by id desc limit :count")
-    suspend fun loadLastNLogs(count: Int): List<LogItem>
+    suspend fun selectLastNLogs(count: Int): List<LogItem>
 
     @Query("SELECT * FROM log where id < :id order by id desc limit :count")
-    suspend fun loadLogsBefore(id: Long, count: Int): List<LogItem>
+    suspend fun selectLogsBefore(id: Long, count: Int): List<LogItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveLog(logs: LogItem): Long
@@ -25,5 +25,5 @@ interface LogDao {
     suspend fun deleteAllLog()
 
     @RawQuery
-    fun loadLogs(query: SupportSQLiteQuery): List<LogItem>
+    fun selectLogs(query: SupportSQLiteQuery): List<LogItem>
 }

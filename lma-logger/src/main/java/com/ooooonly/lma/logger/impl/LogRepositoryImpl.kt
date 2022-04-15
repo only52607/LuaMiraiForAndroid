@@ -3,8 +3,8 @@ package com.ooooonly.lma.logger.impl
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.ooooonly.lma.datastore.dao.LogDao
 import com.ooooonly.lma.datastore.entity.LogItem
-import com.ooooonly.lma.logger.LogInsertListener
 import com.ooooonly.lma.logger.LogRepository
+import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,7 +12,9 @@ import javax.inject.Singleton
 class LogRepositoryImpl @Inject constructor(
     private val logDao: LogDao
 ) : LogRepository {
-    private val listeners = mutableSetOf<LogInsertListener>()
+
+    private val _logFlow = MutableSharedFlow<LogItem>()
+    override val logFlow = _logFlow
 
     override suspend fun loadLogs(
         containBotMessageLog: Boolean,
@@ -41,29 +43,21 @@ class LogRepositoryImpl @Inject constructor(
             order by id desc limit ?
         """, arrayOf(limits)
         )
-        return logDao.loadLogs(query)
+        return logDao.selectLogs(query)
     }
 
     override suspend fun loadLogsBefore(logItem: LogItem, limit: Int): List<LogItem> {
-        return logDao.loadLogsBefore(logItem.id!!, limit)
+        return logDao.selectLogsBefore(logItem.id!!, limit)
     }
 
     override suspend fun saveLogs(vararg logs: LogItem) {
         logs.forEach { log ->
             log.id = logDao.saveLog(log)
-            listeners.forEach { it.onInsert(log) }
+            _logFlow.emit(log)
         }
     }
 
     override suspend fun removeAllLogs() {
         logDao.deleteAllLog()
-    }
-
-    override fun addLogInsertListener(listener: LogInsertListener) {
-        listeners.add(listener)
-    }
-
-    override fun removeLogInsertListener(listener: LogInsertListener) {
-        listeners.remove(listener)
     }
 }

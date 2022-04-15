@@ -5,11 +5,6 @@ import com.ooooonly.lma.datastore.entity.ScriptItem
 import java.io.File
 import java.net.URL
 
-interface BotScriptSourceRepository {
-
-}
-
-
 fun ScriptItem.toBotScriptSource(): BotScriptSource =
     when(type) {
         ScriptItem.TYPE_FILE -> BotScriptSource.FileSource(File(source), lang)
@@ -24,3 +19,4 @@ fun BotScriptSource.toScriptEntity() = when(this) {
     is BotScriptSource.StringSource -> ScriptItem(source = content, enabled = false, type = ScriptItem.TYPE_CONTENT, lang = scriptLang)
     else -> error("Unsupported BotScriptSource $this")
 }
+

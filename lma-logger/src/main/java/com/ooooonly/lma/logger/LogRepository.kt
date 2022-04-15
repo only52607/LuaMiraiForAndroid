@@ -1,8 +1,11 @@
 package com.ooooonly.lma.logger
 
 import com.ooooonly.lma.datastore.entity.LogItem
+import kotlinx.coroutines.flow.SharedFlow
 
 interface LogRepository {
+    val logFlow: SharedFlow<LogItem>
+
     suspend fun loadLogs(
         containBotMessageLog: Boolean,
         containBotNetLog: Boolean,
@@ -16,12 +19,4 @@ interface LogRepository {
     suspend fun saveLogs(vararg logs: LogItem)
 
     suspend fun removeAllLogs()
-
-    fun addLogInsertListener(listener: LogInsertListener)
-
-    fun removeLogInsertListener(listener: LogInsertListener)
-}
-
-fun interface LogInsertListener {
-    fun onInsert(log: LogItem): Unit
 }

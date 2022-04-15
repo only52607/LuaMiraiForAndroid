@@ -17,7 +17,7 @@ import javax.inject.Inject
 class LogScreenViewModel @Inject constructor(
     private val logRepository: LogRepository,
     private val logDataStore: DataStore<Preferences>
-): ViewModel() {
+) : ViewModel() {
     private data class LogQueryConfig(
         val containBotMessageLog: Boolean,
         val containBotNetLog: Boolean,
@@ -25,47 +25,56 @@ class LogScreenViewModel @Inject constructor(
         val containScriptOutput: Boolean
     )
 
-    private val _logList = MutableStateFlow(listOf<LogItem>())
-    val logList: StateFlow<List<LogItem>> = _logList
+    private val _logList = mutableStateListOf<LogItem>()
+    val logList: List<LogItem> = _logList
+
     val logDisplayState = LogDisplayState()
 
     private var currentHistorySize = 0
-    private var initialListSize = logDataStore.data.map { it[intPreferencesKey("log_initial_size")] ?: 200 }
-    private var maximumListSize = logDataStore.data.map { it[intPreferencesKey("log_maximum_size")] ?: 500 }
-    private var compressedListSize = logDataStore.data.map { it[intPreferencesKey("log_compressed_size")] ?: 200 }
-    private val historyLoadSize = logDataStore.data.map { it[intPreferencesKey("log_load_history_size")] ?: 100 }
-    private val logInsertListener: (LogItem) -> Unit = ::onLogInsert
+    private var initialListSize =
+        logDataStore.data.map { it[intPreferencesKey("log_initial_size")] ?: 200 }
+    private var maximumListSize =
+        logDataStore.data.map { it[intPreferencesKey("log_maximum_size")] ?: 500 }
+    private var compressedListSize =
+        logDataStore.data.map { it[intPreferencesKey("log_compressed_size")] ?: 200 }
+    private val historyLoadSize =
+        logDataStore.data.map { it[intPreferencesKey("log_load_history_size")] ?: 100 }
 
     init {
         initializeLogList()
-        subscribeLogInsert()
+        collectComingLogs()
         attackLogDisplayChanged()
     }
 
     fun clearLog() {
-        _logList.value = listOf()
+        _logList.clear()
     }
 
     suspend fun loadHistoryLog() {
-        val result = logRepository.loadLogsBefore(_logList.value.first(), historyLoadSize.first())
+        if (_logList.isEmpty()) return
+        val result = logRepository.loadLogsBefore(_logList.first(), historyLoadSize.first())
         currentHistorySize += result.size
-        _logList.value = result + _logList.value
+        _logList.addAll(0, result)
     }
 
-    private fun onLogInsert(logItem: LogItem) {
+    private fun collectComingLogs() {
         viewModelScope.launch {
-            compressLog()
-            _logList.value = _logList.value + logItem
+            logRepository.logFlow.filter {
+                it.from == LogItem.FROM_BOT_PRIMARY && logDisplayState.containBotMessageLog.value ||
+                        it.from == LogItem.FROM_BOT_NETWORK && logDisplayState.containBotNetLog.value ||
+                        it.from == LogItem.FROM_MCL && logDisplayState.containMclLog.value ||
+                        it.from == LogItem.FROM_SCRIPT && logDisplayState.containScriptOutput.value
+            }.collect {
+                compressLog()
+                _logList.add(it)
+            }
         }
-    }
-
-    private fun subscribeLogInsert() {
-        logRepository.addLogInsertListener(logInsertListener)
     }
 
     private fun attackLogDisplayChanged() {
         viewModelScope.launch {
-            snapshotFlow { LogQueryConfig(
+            snapshotFlow {
+                LogQueryConfig(
                     containBotMessageLog = logDisplayState.containBotMessageLog.value,
                     containMclLog = logDisplayState.containMclLog.value,
                     containScriptOutput = logDisplayState.containScriptOutput.value,
@@ -87,17 +96,13 @@ class LogScreenViewModel @Inject constructor(
                 containMclLog = logDisplayState.containMclLog.value,
                 limits = initialListSize.first().toLong()
             )
-            _logList.value = result + _logList.value
+            _logList.addAll(0, result)
         }
     }
 
     private suspend fun compressLog() {
-        if (_logList.value.size <= maximumListSize.first() + currentHistorySize) return
-        _logList.value = _logList.value.takeLast(compressedListSize.first() + currentHistorySize)
-    }
-
-    override fun onCleared() {
-        logRepository.removeLogInsertListener(logInsertListener)
-        super.onCleared()
+        if (_logList.size <= maximumListSize.first() + currentHistorySize) return
+        val reserve = compressedListSize.first() + currentHistorySize
+        _logList.removeRange(0, _logList.size - reserve - 1)
     }
 }

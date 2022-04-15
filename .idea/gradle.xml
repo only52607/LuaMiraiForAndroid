@@ -4,6 +4,32 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/../../Idea/lua-mirai" name="lua-mirai">
+                <projects>
+                  <project path="$PROJECT_DIR$/../../Idea/lua-mirai" />
+                  <project path="$PROJECT_DIR$/../../Idea/lua-mirai/lua-mirai-adapter-luakt" />
+                  <project path="$PROJECT_DIR$/../../Idea/lua-mirai/lua-mirai-core" />
+                  <project path="$PROJECT_DIR$/../../Idea/lua-mirai/lua-mirai-executable" />
+                  <project path="$PROJECT_DIR$/../../Idea/lua-mirai/lua-mirai-executable-mcl" />
+                  <project path="$PROJECT_DIR$/../../Idea/lua-mirai/lua-mirai-mcl-plugin" />
+                </projects>
+              </build>
+              <build path="$PROJECT_DIR$/../../Idea/luakt" name="luakt">
+                <projects>
+                  <project path="$PROJECT_DIR$/../../Idea/luakt" />
+                  <project path="$PROJECT_DIR$/../../Idea/luakt/luakt-core" />
+                  <project path="$PROJECT_DIR$/../../Idea/luakt/luakt-dsl" />
+                  <project path="$PROJECT_DIR$/../../Idea/luakt/luakt-dsl-cr" />
+                  <project path="$PROJECT_DIR$/../../Idea/luakt/luakt-libs" />
+                  <project path="$PROJECT_DIR$/../../Idea/luakt/luakt-luaj" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -18,9 +44,20 @@
             <option value="$PROJECT_DIR$/lma-logger" />
             <option value="$PROJECT_DIR$/lma-script" />
             <option value="$PROJECT_DIR$/lma-utils" />
+            <option value="$PROJECT_DIR$/../../Idea/lua-mirai" />
+            <option value="$PROJECT_DIR$/../../Idea/lua-mirai/lua-mirai-adapter-luakt" />
+            <option value="$PROJECT_DIR$/../../Idea/lua-mirai/lua-mirai-core" />
+            <option value="$PROJECT_DIR$/../../Idea/lua-mirai/lua-mirai-executable" />
+            <option value="$PROJECT_DIR$/../../Idea/lua-mirai/lua-mirai-executable-mcl" />
+            <option value="$PROJECT_DIR$/../../Idea/lua-mirai/lua-mirai-mcl-plugin" />
+            <option value="$PROJECT_DIR$/../../Idea/luakt" />
+            <option value="$PROJECT_DIR$/../../Idea/luakt/luakt-core" />
+            <option value="$PROJECT_DIR$/../../Idea/luakt/luakt-dsl" />
+            <option value="$PROJECT_DIR$/../../Idea/luakt/luakt-dsl-cr" />
+            <option value="$PROJECT_DIR$/../../Idea/luakt/luakt-libs" />
+            <option value="$PROJECT_DIR$/../../Idea/luakt/luakt-luaj" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

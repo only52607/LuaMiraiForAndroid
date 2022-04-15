@@ -6,7 +6,7 @@ import com.ooooonly.lma.datastore.entity.BotItem
 @Dao
 interface BotDao {
     @Query("SELECT * FROM bot")
-    suspend fun loadAllBots(): Array<BotItem>
+    suspend fun selectAllBots(): Array<BotItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveBots(vararg bots: BotItem)

@@ -6,7 +6,7 @@ import com.ooooonly.lma.datastore.entity.ScriptItem
 @Dao
 interface ScriptDao {
     @Query("SELECT * FROM script")
-    suspend fun loadAllScripts(): Array<ScriptItem>
+    suspend fun selectAllScripts(): List<ScriptItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveScript(scripts: ScriptItem): Long
