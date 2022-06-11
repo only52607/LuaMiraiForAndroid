@@ -32,4 +32,6 @@ android {
 dependencies {
     implementation project(":lma-base")
     implementation project(":lma-datastore")
+
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
 }

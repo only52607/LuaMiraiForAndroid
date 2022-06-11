@@ -1,7 +1,9 @@
 package com.ooooonly.lma.logger
 
-import com.ooooonly.lma.logger.impl.LmaLoggerImpl
-import com.ooooonly.lma.logger.impl.LogRepositoryImpl
+import com.ooooonly.lma.logger.utils.impl.LmaLoggerImpl
+import com.ooooonly.lma.logger.repository.impl.LogRepositoryImpl
+import com.ooooonly.lma.logger.repository.LogRepository
+import com.ooooonly.lma.logger.utils.LmaLogger
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
