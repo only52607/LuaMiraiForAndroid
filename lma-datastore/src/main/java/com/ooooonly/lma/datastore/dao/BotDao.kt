@@ -13,4 +13,7 @@ interface BotDao {
 
     @Delete
     suspend fun deleteBots(vararg bots: BotEntity)
+
+    @Query("SELECT * FROM bot where id=:id")
+    suspend fun getBotById(id: Long): BotEntity
 }

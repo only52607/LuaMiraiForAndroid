@@ -18,6 +18,7 @@ data class LogEntity(
         const val LEVEL_ERROR = 1
         const val LEVEL_DEBUG = 2
         const val LEVEL_WARNING = 3
+        const val LEVEL_VERBOSE = 4
 
         const val FROM_BOT_PRIMARY = 0
         const val FROM_BOT_NETWORK = 1
