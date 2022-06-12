@@ -12,7 +12,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LogRepositoryImpl @Inject constructor(
+internal class LogRepositoryImpl @Inject constructor(
     private val logDao: LogDao
 ) : LogRepository {
     private val Log.entityValue: LogEntity
@@ -29,6 +29,7 @@ class LogRepositoryImpl @Inject constructor(
                 LogLevel.Debug -> LogEntity.LEVEL_DEBUG
                 LogLevel.Error -> LogEntity.LEVEL_ERROR
                 LogLevel.Warning -> LogEntity.LEVEL_WARNING
+                LogLevel.Verbose -> LogEntity.LEVEL_VERBOSE
             },
             identity = identity,
             content = content,
@@ -50,6 +51,7 @@ class LogRepositoryImpl @Inject constructor(
                 LogEntity.LEVEL_DEBUG -> LogLevel.Debug
                 LogEntity.LEVEL_ERROR -> LogLevel.Error
                 LogEntity.LEVEL_WARNING -> LogLevel.Warning
+                LogEntity.LEVEL_VERBOSE -> LogLevel.Verbose
                 else -> throw Exception("Unknown log level $from")
             },
             identity = identity,
