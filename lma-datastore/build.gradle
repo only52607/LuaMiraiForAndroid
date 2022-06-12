@@ -2,19 +2,14 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.devtools.ksp'
-    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 dependencies {
     implementation project(":lma-base")
-    implementation project(":lma-utils")
-
     api "androidx.room:room-runtime:2.3.0"
     ksp "androidx.room:room-compiler:2.3.0"
     api "androidx.room:room-ktx:2.3.0"
     api "androidx.datastore:datastore-preferences:1.0.0"
-
-    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2'
 }
 
 android {

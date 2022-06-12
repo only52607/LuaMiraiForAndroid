@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity(tableName = "log")
-data class LogItem(
+data class LogEntity(
     @PrimaryKey(autoGenerate = true) var id: Long? = null,
     val from: Int = FROM_BOT_PRIMARY,
     val level: Int = LEVEL_INFO,
@@ -16,6 +16,8 @@ data class LogItem(
     companion object {
         const val LEVEL_INFO = 0
         const val LEVEL_ERROR = 1
+        const val LEVEL_DEBUG = 2
+        const val LEVEL_WARNING = 3
 
         const val FROM_BOT_PRIMARY = 0
         const val FROM_BOT_NETWORK = 1
